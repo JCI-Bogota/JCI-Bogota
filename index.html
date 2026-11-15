@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JCI Bogotá · Procesos</title>
+<meta name="theme-color" content="#0097D7">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#0097D7;--black:#130F2D;--navy:#1F4789;--teal:#57BCBC;--gris:#4E4B62;--linea:#D9E3EC;--fondo:#F4F8FB;--blanco:#fff}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--fondo);color:var(--black);min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
+.barra{height:8px;background:linear-gradient(90deg,var(--blue),var(--teal))}
+header{background:var(--blanco);padding:calc(18px + env(safe-area-inset-top)) 20px 18px;border-bottom:1px solid var(--linea);display:flex;align-items:center;justify-content:center}
+header img{height:64px;width:auto;display:block}
+main{max-width:560px;margin:0 auto;padding:22px 16px 28px}
+h1{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--navy);font-weight:800;margin:6px 4px 4px}
+.sub{font-size:14.5px;color:var(--gris);margin:0 4px 18px;line-height:1.5}
+.lista{display:grid;gap:12px}
+a.card,div.card{display:flex;align-items:center;gap:14px;background:var(--blanco);border:1px solid var(--linea);border-radius:14px;padding:16px;text-decoration:none;color:inherit;min-height:84px;transition:transform .08s,box-shadow .15s}
+a.card:active{transform:scale(.985)}
+a.card:hover{box-shadow:0 4px 14px rgba(19,15,45,.08)}
+a.card:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.ico{flex:none;width:52px;height:52px;border-radius:12px;background:#E9F6FC;display:grid;place-items:center}
+.ico svg{width:28px;height:28px;stroke:var(--blue);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.txt{flex:1;min-width:0}
+.txt b{display:block;font-size:17px;font-weight:800}
+.txt span{display:block;font-size:13.5px;color:var(--gris);margin-top:2px;line-height:1.4}
+.ir{flex:none;font-size:13px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:4px}
+.ir svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+div.card{opacity:.6;background:#F9FBFD;border-style:dashed}
+div.card .ico{background:#EEF1F4}div.card .ico svg{stroke:var(--gris)}
+.pronto{flex:none;font-size:12px;font-weight:700;color:var(--gris);background:#EEF1F4;border-radius:999px;padding:4px 10px}
+.nota{margin:22px 4px 0;padding:12px 14px;background:#E9F6FC;border-radius:12px;font-size:13px;color:var(--navy);line-height:1.5}
+footer{text-align:center;font-size:12px;color:var(--gris);padding:10px 20px 24px}
+.err{padding:14px;background:#FFF7D6;border-radius:12px;color:#8A6F00;font-size:14px}
+</style>
+</head>
+<body>
+<div class="barra"></div>
+<header><img src="logo.png" alt="JCI Bogotá"></header>
+<main>
+  <h1>Tus procesos</h1>
+  <p class="sub">Toca el proceso que necesitas. Cada tablero te pide entrar con tu cuenta de Google y te muestra solo lo que tu rol permite.</p>
+  <div class="lista" id="lista" aria-live="polite"></div>
+  <div class="nota">Entra con tu cuenta <b>@jcibogota.org</b>. Si el celular tiene varias cuentas de Google, elige esa.</div>
+</main>
+<footer>JCI Bogotá · Cámara Junior de Bogotá</footer>
+<script>
+var ICONOS = {
+  moneda: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.2c-.5-.8-1.4-1.2-2.5-1.2-1.4 0-2.4.7-2.4 1.8 0 2.7 5 1.3 5 4 0 1.1-1.1 1.9-2.6 1.9-1.2 0-2.2-.5-2.7-1.4M12 6.5V8m0 8v1.5"/>',
+  escudo: '<path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2.2 2.2L15.5 10"/>',
+  documento: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h6M9.5 16h6"/>',
+  personas: '<circle cx="9" cy="8" r="3"/><path d="M3.5 19c.5-3 2.6-5 5.5-5s5 2 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.2c2.3.2 4 1.8 4.5 4.8"/>',
+  calendario: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4m6-4v4"/>',
+  grafico: '<path d="M4 20V4M4 20h16M8 16v-4m4 4V8m4 8v-6"/>'
+};
+var FLECHA = '<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>';
+function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function urlSegura(u){try{var x=new URL(u);return (x.protocol==='https:')?x.href:'';}catch(e){return '';}}
+fetch('apps.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(cfg){
+  var l=document.getElementById('lista'); l.innerHTML='';
+  (cfg.apps||[]).forEach(function(a){
+    var u=urlSegura(a.url), svg='<svg viewBox="0 0 24 24">'+(ICONOS[a.icono]||ICONOS.documento)+'</svg>';
+    var cuerpo='<span class="ico">'+svg+'</span><span class="txt"><b>'+esc(a.nombre)+'</b><span>'+esc(a.descripcion)+'</span></span>';
+    if(u){ l.insertAdjacentHTML('beforeend','<a class="card" href="'+esc(u)+'" target="_blank" rel="noopener">'+cuerpo+'<span class="ir">Abrir '+FLECHA+'</span></a>'); }
+    else { l.insertAdjacentHTML('beforeend','<div class="card" aria-disabled="true">'+cuerpo+'<span class="pronto">Próximamente</span></div>'); }
+  });
+}).catch(function(){document.getElementById('lista').innerHTML='<div class="err">No pude cargar la lista de procesos. Revisa tu conexión e inténtalo de nuevo.</div>';});
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+</body>
+</html>

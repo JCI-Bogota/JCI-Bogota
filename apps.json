@@ -1,0 +1,19 @@
+{
+  "titulo": "JCI Bogotá · Procesos",
+  "apps": [
+    {
+      "id": "tesoreria",
+      "nombre": "Tesorería",
+      "descripcion": "Estado de cuenta, paz y salvo, presupuesto y recaudo.",
+      "icono": "moneda",
+      "url": "https://script.google.com/a/macros/jcibogota.org/s/AKfycbxwX7XLskjICWup4vD2FeaSL3R1WyHtpGkDxnKcbr1ceskwHcbpLsqxj8r0vicEpjGP/exec"
+    },
+    {
+      "id": "contraloria",
+      "nombre": "Contraloría",
+      "descripcion": "Control, seguimiento y hallazgos.",
+      "icono": "escudo",
+      "url": "https://script.google.com/a/macros/jcibogota.org/s/AKfycbzdzan7Rn-Z9iufjawGuAa_6UxXUj4zo02XXLoMofjDD0iC-KpIEQzebnKmiIiu4f2TeQ/exec"
+    }
+  ]
+}
