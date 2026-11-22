@@ -1,0 +1,11 @@
+{
+  "activas": false,
+  "firebase": {
+    "apiKey": "",
+    "authDomain": "",
+    "projectId": "",
+    "messagingSenderId": "",
+    "appId": ""
+  },
+  "vapidKey": ""
+}

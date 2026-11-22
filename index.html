@@ -53,6 +53,13 @@ footer{text-align:center;font-size:12px;color:var(--gris);padding:10px 20px 24px
 .aviso a svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .nuevo{flex:none;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--blanco);background:var(--blue);border-radius:999px;padding:3px 9px}
 .aviso.importante .nuevo{background:#8A6F00}
+.notif{display:flex;align-items:center;gap:12px;background:var(--blanco);border:1px solid var(--linea);border-radius:14px;padding:14px 16px;margin:18px 0 0}
+.notif[hidden],.avisos[hidden]{display:none}
+.notif .ico{width:44px;height:44px}
+.notif .txt b{font-size:15px}
+.notif button{flex:none;border:0;border-radius:10px;background:var(--blue);color:#fff;font:700 13.5px 'Plus Jakarta Sans',system-ui,sans-serif;padding:10px 14px;cursor:pointer}
+.notif button:disabled{background:#EEF1F4;color:var(--gris);cursor:default}
+.notif button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
 .err{padding:14px;background:#FFF7D6;border-radius:12px;color:#8A6F00;font-size:14px}
 </style>
 </head>
@@ -67,6 +74,11 @@ footer{text-align:center;font-size:12px;color:var(--gris);padding:10px 20px 24px
   <h1>Tus procesos</h1>
   <p class="sub">Toca el proceso que necesitas. Cada tablero te pide entrar con tu cuenta de Google y te muestra solo lo que tu rol permite.</p>
   <div class="lista" id="lista" aria-live="polite"></div>
+  <div class="notif" id="notif" hidden>
+    <span class="ico"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 004 0"/></svg></span>
+    <span class="txt"><b>Notificaciones</b><span id="notif-txt">Recibe en este celular los avisos de tus tableros.</span></span>
+    <button type="button" id="notif-btn">Activar</button>
+  </div>
   <div class="nota">Entra con tu cuenta <b>@jcibogota.org</b>. Si el celular tiene varias cuentas de Google, elige esa.</div>
 </main>
 <footer>JCI Bogotá · Cámara Junior de Bogotá</footer>
@@ -87,7 +99,7 @@ fetch('apps.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(f
   (cfg.apps||[]).forEach(function(a){
     var u=urlSegura(a.url), svg='<svg viewBox="0 0 24 24">'+(ICONOS[a.icono]||ICONOS.documento)+'</svg>';
     var cuerpo='<span class="ico">'+svg+'</span><span class="txt"><b>'+esc(a.nombre)+'</b><span>'+esc(a.descripcion)+'</span></span>';
-    if(u){ l.insertAdjacentHTML('beforeend','<a class="card" href="'+esc(u)+'" target="_blank" rel="noopener">'+cuerpo+'<span class="ir">Abrir '+FLECHA+'</span></a>'); }
+    if(u){ l.insertAdjacentHTML('beforeend','<a class="card" data-base="'+esc(u)+'" href="'+esc(conPush(u))+'" target="_blank" rel="noopener">'+cuerpo+'<span class="ir">Abrir '+FLECHA+'</span></a>'); }
     else { l.insertAdjacentHTML('beforeend','<div class="card" aria-disabled="true">'+cuerpo+'<span class="pronto">Próximamente</span></div>'); }
   });
 }).catch(function(){document.getElementById('lista').innerHTML='<div class="err">No pude cargar la lista de procesos. Revisa tu conexión e inténtalo de nuevo.</div>';});
@@ -119,6 +131,51 @@ fetch('avisos.json',{cache:'no-cache'}).then(function(r){return r.json();}).then
     .sort(function(x,y){return (y.tipo==='importante')-(x.tipo==='importante')||String(y.desde||'').localeCompare(String(x.desde||''));});
   pintarAvisos(vigentes);
 }).catch(function(){/* sin avisos: el lanzador funciona igual */});
+/* ── Notificaciones al celular (nivel 2 · Firebase Cloud Messaging). Solo si notificaciones.json está activo y completo. ── */
+var FIREBASE_V='10.12.2';
+function plataforma(){var u=navigator.userAgent||'';return /iPhone|iPad|iPod/.test(u)?'ios':/Android/.test(u)?'android':'otro';}
+function instalada(){return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
+function codigoPush(){try{return localStorage.getItem('jci-push-codigo')||'';}catch(e){return '';}}
+/* El tablero guarda «este correo ↔ este celular» al abrirse; la identidad la pone Google, no el enlace. */
+function conPush(u){var c=codigoPush();if(!c)return u;try{var x=new URL(u);x.searchParams.set('push',c);x.searchParams.set('disp',plataforma());return x.href;}catch(e){return u;}}
+function actualizarEnlaces(){Array.prototype.forEach.call(document.querySelectorAll('a.card[data-base]'),function(a){a.href=conPush(a.getAttribute('data-base'));});}
+function cargarScript(src){return new Promise(function(ok,mal){var s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=mal;document.head.appendChild(s);});}
+var NOTIF_CFG=null;
+function obtenerCodigo(){
+  return cargarScript('https://www.gstatic.com/firebasejs/'+FIREBASE_V+'/firebase-app-compat.js')
+    .then(function(){return cargarScript('https://www.gstatic.com/firebasejs/'+FIREBASE_V+'/firebase-messaging-compat.js');})
+    .then(function(){return navigator.serviceWorker.ready;})
+    .then(function(reg){if(!firebase.apps.length)firebase.initializeApp(NOTIF_CFG.firebase);return firebase.messaging().getToken({vapidKey:NOTIF_CFG.vapidKey,serviceWorkerRegistration:reg});})
+    .then(function(c){if(!c)throw new Error('sin código');try{localStorage.setItem('jci-push-codigo',c);}catch(e){}actualizarEnlaces();return c;});
+}
+function pintarNotif(estado,texto){
+  var caja=document.getElementById('notif'),btn=document.getElementById('notif-btn');caja.hidden=false;document.getElementById('notif-txt').textContent=texto;
+  btn.disabled=estado!=='activar';btn.textContent=estado==='activas'?'Activadas':estado==='activar'?'Activar':estado==='trabajando'?'Activando…':'No disponible';
+}
+function iniciarNotif(){
+  if(!('serviceWorker' in navigator)||!('Notification' in window)||!('PushManager' in window)){
+    if(plataforma()==='ios'&&!instalada())pintarNotif('no','En iPhone, primero instala la app: Compartir → «Agregar a inicio». Después ábrela desde el ícono.');
+    return;
+  }
+  if(Notification.permission==='denied'){pintarNotif('no','Bloqueaste las notificaciones. Actívalas en los ajustes del navegador para esta app.');return;}
+  if(Notification.permission==='granted'){
+    pintarNotif('activas','Este celular recibe los avisos. Abre cada tablero una vez para quedar registrado en él.');
+    obtenerCodigo().catch(function(){});   // renueva el código en silencio (Firebase lo cambia de vez en cuando)
+    return;
+  }
+  pintarNotif('activar','Recibe en este celular los avisos de tus tableros.');
+  document.getElementById('notif-btn').onclick=function(){
+    pintarNotif('trabajando','Acepta el permiso que pide el celular.');
+    Notification.requestPermission().then(function(p){
+      if(p!=='granted'){pintarNotif(p==='denied'?'no':'activar',p==='denied'?'No se activaron. Puedes cambiarlo en los ajustes del navegador.':'Recibe en este celular los avisos de tus tableros.');return;}
+      return obtenerCodigo().then(function(){pintarNotif('activas','Listo. Ahora abre Tesorería y Contraloría una vez desde aquí para quedar registrado.');});
+    }).catch(function(){pintarNotif('activar','No se pudo activar. Revisa tu conexión e inténtalo de nuevo.');});
+  };
+}
+fetch('notificaciones.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(c){
+  var f=c&&c.firebase||{};
+  if(c&&c.activas&&f.apiKey&&f.projectId&&f.messagingSenderId&&f.appId&&c.vapidKey){NOTIF_CFG=c;iniciarNotif();}
+}).catch(function(){/* sin notificaciones: el lanzador funciona igual */});
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 </script>
 </body>

@@ -1,6 +1,6 @@
 # Diseño · Nivel 2: notificaciones al celular (push)
 
-**Estado:** diseño para aprobar. No hay nada construido de este nivel.
+**Estado:** fase A construida (22-nov-2026), lista para conectar con Firebase. Ver `GUIA_NOTIFICACIONES_FASE_A.md`.
 **Nivel 1** (avisos generales en `avisos.json`) ya está construido en este repositorio.
 
 ## 1. Qué resuelve
