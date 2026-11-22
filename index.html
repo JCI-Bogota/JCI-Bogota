@@ -38,6 +38,21 @@ div.card .ico{background:#EEF1F4}div.card .ico svg{stroke:var(--gris)}
 .pronto{flex:none;font-size:12px;font-weight:700;color:var(--gris);background:#EEF1F4;border-radius:999px;padding:4px 10px}
 .nota{margin:22px 4px 0;padding:12px 14px;background:#E9F6FC;border-radius:12px;font-size:13px;color:var(--navy);line-height:1.5}
 footer{text-align:center;font-size:12px;color:var(--gris);padding:10px 20px 24px}
+.avisos{margin:0 0 20px}
+.avisos-cab{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 4px 10px}
+.avisos-cab h2{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--navy);font-weight:800;margin:0}
+.leidos{border:0;background:none;color:var(--blue);font:700 13px 'Plus Jakarta Sans',system-ui,sans-serif;padding:6px 4px;cursor:pointer}
+.leidos:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
+.aviso{background:var(--blanco);border:1px solid var(--linea);border-left:4px solid var(--blue);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.aviso.importante{border-left-color:#EFC40F;background:#FFFCF0}
+.aviso-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.aviso b{font-size:15.5px;font-weight:800;line-height:1.35}
+.aviso p{margin:6px 0 0;font-size:14px;color:var(--gris);line-height:1.5}
+.aviso .fecha{display:block;margin-top:8px;font-size:12px;color:var(--gris)}
+.aviso a{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:13.5px;font-weight:700;color:var(--blue);text-decoration:none}
+.aviso a svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.nuevo{flex:none;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--blanco);background:var(--blue);border-radius:999px;padding:3px 9px}
+.aviso.importante .nuevo{background:#8A6F00}
 .err{padding:14px;background:#FFF7D6;border-radius:12px;color:#8A6F00;font-size:14px}
 </style>
 </head>
@@ -45,6 +60,10 @@ footer{text-align:center;font-size:12px;color:var(--gris);padding:10px 20px 24px
 <div class="barra"></div>
 <header><img src="logo.png" alt="JCI Bogotá"></header>
 <main>
+  <section class="avisos" id="avisos" hidden aria-label="Avisos">
+    <div class="avisos-cab"><h2>Avisos</h2><button class="leidos" id="leidos" type="button" hidden>Marcar como leídos</button></div>
+    <div id="lista-avisos" aria-live="polite"></div>
+  </section>
   <h1>Tus procesos</h1>
   <p class="sub">Toca el proceso que necesitas. Cada tablero te pide entrar con tu cuenta de Google y te muestra solo lo que tu rol permite.</p>
   <div class="lista" id="lista" aria-live="polite"></div>
@@ -72,6 +91,34 @@ fetch('apps.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(f
     else { l.insertAdjacentHTML('beforeend','<div class="card" aria-disabled="true">'+cuerpo+'<span class="pronto">Próximamente</span></div>'); }
   });
 }).catch(function(){document.getElementById('lista').innerHTML='<div class="err">No pude cargar la lista de procesos. Revisa tu conexión e inténtalo de nuevo.</div>';});
+/* ── Avisos generales (avisos.json): iguales para todos, con fecha de inicio y fin. Lo leído se recuerda en este celular. ── */
+var MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function hoyBogota(){var d=new Date(Date.now()-5*3600000);return d.toISOString().slice(0,10);}
+function fechaTxt(ymd){var p=String(ymd).split('-');return p.length===3?Number(p[2])+' de '+MESES[Number(p[1])-1]:'';}
+function leidosGuardados(){try{return JSON.parse(localStorage.getItem('jci-avisos-leidos')||'[]');}catch(e){return [];}}
+function guardarLeidos(l){try{localStorage.setItem('jci-avisos-leidos',JSON.stringify(l.slice(-200)));}catch(e){}}
+function ponerInsignia(n){try{if(n>0&&navigator.setAppBadge)navigator.setAppBadge(n);else if(navigator.clearAppBadge)navigator.clearAppBadge();}catch(e){}}
+function pintarAvisos(lista){
+  var caja=document.getElementById('avisos'),cont=document.getElementById('lista-avisos'),btn=document.getElementById('leidos');
+  var leidos=leidosGuardados(),nuevos=0;
+  if(!lista.length){caja.hidden=true;ponerInsignia(0);return;}
+  cont.innerHTML=lista.map(function(a){
+    var nuevo=leidos.indexOf(a.id)<0; if(nuevo)nuevos++;
+    var u=a.enlace&&urlSegura(a.enlace.url);
+    return '<article class="aviso'+(a.tipo==='importante'?' importante':'')+'"><div class="aviso-top"><b>'+esc(a.titulo)+'</b>'+(nuevo?'<span class="nuevo">Nuevo</span>':'')+'</div>'+
+      (a.texto?'<p>'+esc(a.texto)+'</p>':'')+
+      (u?'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(a.enlace.texto||'Ver más')+' '+FLECHA+'</a>':'')+
+      ((a.desde||a.hasta)?'<span class="fecha">'+[a.desde?'Publicado el '+esc(fechaTxt(a.desde)):'',a.hasta?'visible hasta el '+esc(fechaTxt(a.hasta)):''].filter(Boolean).join(' · ')+'</span>':'')+'</article>';
+  }).join('');
+  caja.hidden=false; btn.hidden=!nuevos; ponerInsignia(nuevos);
+  btn.onclick=function(){guardarLeidos(leidos.concat(lista.map(function(a){return a.id;})));pintarAvisos(lista);};
+}
+fetch('avisos.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(cfg){
+  var hoy=hoyBogota();
+  var vigentes=(cfg.avisos||[]).filter(function(a){return a&&a.id&&a.titulo&&(!a.desde||a.desde<=hoy)&&(!a.hasta||a.hasta>=hoy);})
+    .sort(function(x,y){return (y.tipo==='importante')-(x.tipo==='importante')||String(y.desde||'').localeCompare(String(x.desde||''));});
+  pintarAvisos(vigentes);
+}).catch(function(){/* sin avisos: el lanzador funciona igual */});
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 </script>
 </body>

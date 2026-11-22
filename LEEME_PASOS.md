@@ -20,6 +20,28 @@ Abre ese enlace → menú ⋮ → «Instalar app» (o «Añadir a pantalla de in
 ## 4. Cambios futuros
 Solo edita `apps.json` en GitHub. A los miembros les aparece el cambio sin reinstalar.
 
+## 5. Avisos generales (archivo `avisos.json`)
+Los avisos salen arriba de los botones, iguales para todos. Para publicar uno, edita `avisos.json` en GitHub y agrega un bloque:
+
+```json
+{
+  "id": "2026-12-asamblea",
+  "titulo": "Asamblea ordinaria",
+  "texto": "Texto corto del aviso.",
+  "tipo": "importante",
+  "desde": "2026-11-25",
+  "hasta": "2026-12-03",
+  "enlace": { "texto": "Ver la convocatoria", "url": "https://..." }
+}
+```
+
+- `id`: único y sin repetir (sirve para saber si la persona ya lo leyó). Sugerido: año-mes-tema.
+- `tipo`: `importante` (amarillo, va primero) o `info` (azul).
+- `desde` / `hasta`: fechas `AAAA-MM-DD`. Antes de `desde` no se ve; después de `hasta` desaparece solo. Ambas son opcionales.
+- `enlace`: opcional; solo se aceptan enlaces `https://`.
+- Cada aviso nuevo sale con la etiqueta «Nuevo» y el ícono de la app muestra cuántos hay sin leer (Android y iPhone con la app instalada). «Marcar como leídos» lo recuerda en ese celular.
+- Si el archivo tiene un error de formato, simplemente no salen avisos: el resto del lanzador funciona igual. Revisa las comas entre bloques.
+
 ## Notas
 - La carcasa no guarda datos ni contraseñas; solo abre enlaces.
 - Los tableros se abren con la cuenta de Google del celular: indicar @jcibogota.org.
