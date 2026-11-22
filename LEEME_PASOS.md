@@ -9,6 +9,8 @@ Abre `apps.json` y pon en `"url"` el enlace `https://script.google.com/macros/s/
 Para sumar un proceso nuevo, copia un bloque `{ ... }` dentro de `"apps"`, cambia `id`, `nombre`, `descripcion`, `url` y elige un `icono`: moneda, escudo, documento, personas, calendario, grafico.
 
 ## 2. Publicar (GitHub Pages, gratis)
+
+> **Repositorio oficial:** `JCI-Bogota/JCI-Bogota` (cuenta de la organización). Dirección: `https://jci-bogota.github.io/JCI-Bogota/`. El repositorio personal `AndresfonsecaC/jci-bogota-app` queda solo para avisar del cambio de dirección.
 1. Crea un repositorio público en GitHub, por ejemplo `jci-bogota-app`.
 2. Sube todo el contenido de esta carpeta (no la carpeta, sus archivos).
 3. Settings → Pages → Branch: `main` / carpeta `/ (root)` → Save.
