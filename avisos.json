@@ -1,0 +1,12 @@
+{
+  "avisos": [
+    {
+      "id": "2026-11-avisos-en-la-app",
+      "titulo": "Nuevo: avisos en la app",
+      "texto": "Aquí verás los avisos generales de JCI Bogotá. Cuando haya uno nuevo, el ícono de la app mostrará un número.",
+      "tipo": "info",
+      "desde": "2026-11-22",
+      "hasta": "2026-12-15"
+    }
+  ]
+}
