@@ -113,24 +113,41 @@ function ponerInsignia(n){try{if(n>0&&navigator.setAppBadge)navigator.setAppBadg
 function pintarAvisos(lista){
   var caja=document.getElementById('avisos'),cont=document.getElementById('lista-avisos'),btn=document.getElementById('leidos');
   var leidos=leidosGuardados(),nuevos=0;
-  if(!lista.length){caja.hidden=true;ponerInsignia(0);return;}
+  if(!lista.length){cont.innerHTML='';caja.hidden=true;btn.hidden=true;ponerInsignia(0);return;}
   cont.innerHTML=lista.map(function(a){
     var nuevo=leidos.indexOf(a.id)<0; if(nuevo)nuevos++;
     var u=a.enlace&&urlSegura(a.enlace.url);
     return '<article class="aviso'+(a.tipo==='importante'?' importante':'')+'"><div class="aviso-top"><b>'+esc(a.titulo)+'</b>'+(nuevo?'<span class="nuevo">Nuevo</span>':'')+'</div>'+
       (a.texto?'<p>'+esc(a.texto)+'</p>':'')+
       (u?'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(a.enlace.texto||'Ver más')+' '+FLECHA+'</a>':'')+
-      ((a.desde||a.hasta)?'<span class="fecha">'+[a.desde?'Publicado el '+esc(fechaTxt(a.desde)):'',a.hasta?'visible hasta el '+esc(fechaTxt(a.hasta)):''].filter(Boolean).join(' · ')+'</span>':'')+'</article>';
+      (a.recibido?'<span class="fecha">Recibido el '+esc(a.recibido)+'</span>':(a.desde||a.hasta)?'<span class="fecha">'+[a.desde?'Publicado el '+esc(fechaTxt(a.desde)):'',a.hasta?'visible hasta el '+esc(fechaTxt(a.hasta)):''].filter(Boolean).join(' · ')+'</span>':'')+'</article>';
   }).join('');
   caja.hidden=false; btn.hidden=!nuevos; ponerInsignia(nuevos);
   btn.onclick=function(){guardarLeidos(leidos.concat(lista.map(function(a){return a.id;})));pintarAvisos(lista);};
 }
-fetch('avisos.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(cfg){
-  var hoy=hoyBogota();
-  var vigentes=(cfg.avisos||[]).filter(function(a){return a&&a.id&&a.titulo&&(!a.desde||a.desde<=hoy)&&(!a.hasta||a.hasta>=hoy);})
+/* Avisos = avisos.json (generales) + las notificaciones que llegaron a este celular (las guarda sw.js en la «bandeja»). */
+var AVISOS_JSON=[];
+function notifListas(){try{return 'Notification' in window&&Notification.permission==='granted'&&registradoEn('tesoreria');}catch(e){return false;}}
+function horaTxt(ms){var d=new Date(ms-5*3600000),h=d.getUTCHours(),m=('0'+d.getUTCMinutes()).slice(-2);return d.getUTCDate()+' de '+MESES[d.getUTCMonth()]+', '+((h%12)||12)+':'+m+(h<12?' a. m.':' p. m.');}
+function leerBandeja(){
+  if(!('caches' in window))return Promise.resolve([]);
+  return caches.open('jci-bandeja').then(function(c){return c.match('bandeja');}).then(function(r){return r?r.json():[];}).catch(function(){return [];});
+}
+function refrescarAvisos(){
+  var hoy=hoyBogota(),listas=notifListas();
+  var generales=AVISOS_JSON.filter(function(a){return a&&a.id&&a.titulo&&(!a.desde||a.desde<=hoy)&&(!a.hasta||a.hasta>=hoy)&&!(a.soloSinNotificaciones&&listas);})
     .sort(function(x,y){return (y.tipo==='importante')-(x.tipo==='importante')||String(y.desde||'').localeCompare(String(x.desde||''));});
-  pintarAvisos(vigentes);
-}).catch(function(){/* sin avisos: el lanzador funciona igual */});
+  leerBandeja().then(function(bandeja){
+    var recibidas=(bandeja||[]).filter(function(n){return n&&n.id&&n.titulo;}).map(function(n){
+      return {id:n.id,titulo:n.titulo,texto:n.texto,tipo:'info',recibido:horaTxt(n.fecha),enlace:n.enlace?{texto:'Abrir',url:n.enlace}:null};
+    });
+    var imp=generales.filter(function(a){return a.tipo==='importante';}),resto=generales.filter(function(a){return a.tipo!=='importante';});
+    pintarAvisos(imp.concat(recibidas,resto));
+  });
+}
+fetch('avisos.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(cfg){AVISOS_JSON=cfg.avisos||[];}).catch(function(){AVISOS_JSON=[];}).then(refrescarAvisos);
+if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',function(e){if(e.data&&e.data.tipo==='bandeja')refrescarAvisos();});
+document.addEventListener('visibilitychange',function(){if(!document.hidden)refrescarAvisos();});
 /* ── Notificaciones al celular (nivel 2 · Firebase Cloud Messaging). Solo si notificaciones.json está activo y completo. ── */
 var FIREBASE_V='10.12.2';
 function plataforma(){var u=navigator.userAgent||'';return /iPhone|iPad|iPod/.test(u)?'ios':/Android/.test(u)?'android':'otro';}
@@ -157,7 +174,7 @@ function ocultarNotif(){document.getElementById('notif').hidden=true;}
 /* Con permiso y código: si ya abrió Tesorería con este código, el panel desaparece; si no, queda solo el último paso. */
 function revisarPanel(){
   if(!NOTIF_CFG||!('Notification' in window)||Notification.permission!=='granted'||!codigoPush())return;
-  if(registradoEn('tesoreria')){ocultarNotif();return;}
+  if(registradoEn('tesoreria')){ocultarNotif();refrescarAvisos();return;}
   var btn=document.getElementById('notif-btn');pintarNotif('activar','Último paso: abre Tesorería una vez desde aquí para recibir sus avisos.');
   btn.textContent='Abrir Tesorería';btn.onclick=function(){var u=urlTesoreria();if(u){marcarRegistro('tesoreria');window.open(u,'_blank','noopener');setTimeout(revisarPanel,500);}};
 }
