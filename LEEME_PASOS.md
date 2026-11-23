@@ -22,6 +22,12 @@ Abre ese enlace → menú ⋮ → «Instalar app» (o «Añadir a pantalla de in
 ## 4. Cambios futuros
 Solo edita `apps.json` en GitHub. A los miembros les aparece el cambio sin reinstalar.
 
+## 4b. Botones restringidos (Contraloría)
+En `apps.json`, una app con `"restringida": { "etiqueta": "Solo Contraloría", "claveSha256": "…" }` se ve **deshabilitada** para todos.
+Quien tenga la clave toca el botón, la escribe y queda habilitado **en ese celular** (se recuerda). Para cambiar la clave hay que
+calcular el nuevo `claveSha256` (SHA-256 de `jci-bogota|CLAVE`); pídeselo a quien mantenga el código. La clave no se guarda en el repositorio.
+Es solo un filtro visual: el tablero de Contraloría sigue validando la cuenta de Google y el rol.
+
 ## 5. Avisos generales (archivo `avisos.json`)
 Los avisos salen arriba de los botones, iguales para todos. Para publicar uno, edita `avisos.json` en GitHub y agrega un bloque:
 

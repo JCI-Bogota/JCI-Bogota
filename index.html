@@ -35,6 +35,9 @@ a.card:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .ir svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 div.card{opacity:.6;background:#F9FBFD;border-style:dashed}
 div.card .ico{background:#EEF1F4}div.card .ico svg{stroke:var(--gris)}
+button.card{width:100%;font:inherit;text-align:left;cursor:pointer;opacity:.6;background:#F9FBFD;border:1px dashed var(--linea);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;min-height:84px;color:inherit}
+button.card .ico{background:#EEF1F4}button.card .ico svg{stroke:var(--gris)}
+button.card:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .pronto{flex:none;font-size:12px;font-weight:700;color:var(--gris);background:#EEF1F4;border-radius:999px;padding:4px 10px}
 .nota{margin:22px 4px 0;padding:12px 14px;background:#E9F6FC;border-radius:12px;font-size:13px;color:var(--navy);line-height:1.5}
 footer{text-align:center;font-size:12px;color:var(--gris);padding:10px 20px 24px}
@@ -94,14 +97,31 @@ var ICONOS = {
 var FLECHA = '<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>';
 function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function urlSegura(u){try{var x=new URL(u);return (x.protocol==='https:')?x.href:'';}catch(e){return '';}}
-fetch('apps.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(cfg){
-  var l=document.getElementById('lista'); l.innerHTML='';
-  (cfg.apps||[]).forEach(function(a){
-    var u=urlSegura(a.url), svg='<svg viewBox="0 0 24 24">'+(ICONOS[a.icono]||ICONOS.documento)+'</svg>';
-    var cuerpo='<span class="ico">'+svg+'</span><span class="txt"><b>'+esc(a.nombre)+'</b><span>'+esc(a.descripcion)+'</span></span>';
-    if(u){ l.insertAdjacentHTML('beforeend','<a class="card" data-id="'+esc(a.id)+'" data-base="'+esc(u)+'" href=""'+esc(conPush(u))+'" target="_blank" rel="noopener">'+cuerpo+'<span class="ir">Abrir '+FLECHA+'</span></a>'); }
-    else { l.insertAdjacentHTML('beforeend','<div class="card" aria-disabled="true">'+cuerpo+'<span class="pronto">Próximamente</span></div>'); }
+/* Botones restringidos (p. ej. Contraloría): se ven deshabilitados; se habilitan en ESTE celular con la clave.
+   Es solo un filtro visual: cada tablero sigue validando la cuenta de Google y el rol. */
+var APPS=[];
+function habilitada(id){try{return localStorage.getItem('jci-app-'+id)==='1';}catch(e){return false;}}
+function sha256(t){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return ('0'+x.toString(16)).slice(-2);}).join('');});}
+document.addEventListener('click',function(ev){
+  var b=ev.target.closest&&ev.target.closest('button.card[data-bloq]');if(!b)return;
+  var app=APPS.filter(function(x){return x.id===b.getAttribute('data-bloq');})[0];if(!app)return;
+  var k=window.prompt((app.restringida.etiqueta||'Restringido')+'. Si tienes la clave, escríbela para habilitarlo en este celular:');
+  if(!k)return;
+  sha256('jci-bogota|'+k.trim()).then(function(h){
+    if(h===app.restringida.claveSha256){try{localStorage.setItem('jci-app-'+app.id,'1');}catch(e){}pintarApps();}
+    else window.alert('Clave incorrecta.');
   });
+});
+function pintarApps(){var l=document.getElementById('lista');l.innerHTML='';APPS.forEach(pintarApp);}
+function pintarApp(a){
+  var l=document.getElementById('lista'),u=urlSegura(a.url),svg='<svg viewBox="0 0 24 24">'+(ICONOS[a.icono]||ICONOS.documento)+'</svg>';
+  var cuerpo='<span class="ico">'+svg+'</span><span class="txt"><b>'+esc(a.nombre)+'</b><span>'+esc(a.descripcion)+'</span></span>';
+  if(u&&a.restringida&&!habilitada(a.id)){ l.insertAdjacentHTML('beforeend','<button type="button" class="card" data-bloq="'+esc(a.id)+'" aria-disabled="true">'+cuerpo+'<span class="pronto">'+esc(a.restringida.etiqueta||'Restringido')+'</span></button>'); }
+  else if(u){ l.insertAdjacentHTML('beforeend','<a class="card" data-id="'+esc(a.id)+'" data-base="'+esc(u)+'" href="'+esc(conPush(u))+'" target="_blank" rel="noopener">'+cuerpo+'<span class="ir">Abrir '+FLECHA+'</span></a>'); }
+  else { l.insertAdjacentHTML('beforeend','<div class="card" aria-disabled="true">'+cuerpo+'<span class="pronto">Próximamente</span></div>'); }
+}
+fetch('apps.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(cfg){
+  APPS=(cfg.apps||[]).filter(function(a){return a&&a.id;}); pintarApps();
 }).catch(function(){document.getElementById('lista').innerHTML='<div class="err">No pude cargar la lista de procesos. Revisa tu conexión e inténtalo de nuevo.</div>';});
 /* ── Avisos generales (avisos.json): iguales para todos, con fecha de inicio y fin. Lo leído se recuerda en este celular. ── */
 var MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -180,7 +200,7 @@ function revisarPanel(){
 }
 function pintarNotif(estado,texto){
   var caja=document.getElementById('notif'),btn=document.getElementById('notif-btn');caja.hidden=false;document.getElementById('notif-txt').textContent=texto;
-  btn.disabled=estado!=='activar';btn.textContent=estado==='activas'?'Activadas':estado==='activar'?'Activar':estado==='trabajando'?'Activando…':'No disponible';
+  btn.disabled=estado!=='activar';btn.textContent=estado==='activar'?'Activar':estado==='trabajando'?'Activando…':'No disponible';
 }
 function iniciarNotif(){
   if(!('serviceWorker' in navigator)||!('Notification' in window)||!('PushManager' in window)){
