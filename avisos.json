@@ -5,16 +5,9 @@
       "titulo": "Activa las notificaciones",
       "texto": "Recibe en tu celular los recordatorios de pago y los avisos de JCI Bogotá. Toca «Activar» en el bloque Notificaciones (más abajo) y después «Abrir Tesorería». En iPhone, primero instala la app en la pantalla de inicio.",
       "tipo": "importante",
-      "desde": "2026-11-23",
-      "hasta": "2027-03-31"
-    },
-    {
-      "id": "2026-11-avisos-en-la-app",
-      "titulo": "Nuevo: avisos en la app",
-      "texto": "Aquí verás los avisos generales de JCI Bogotá. Cuando haya uno nuevo, el ícono de la app mostrará un número.",
-      "tipo": "info",
       "desde": "2026-11-22",
-      "hasta": "2026-12-15"
+      "hasta": "2027-03-31",
+      "soloSinNotificaciones": true
     }
   ]
 }
