@@ -1,6 +1,6 @@
 # Diseño · Nivel 2: notificaciones al celular (push)
 
-**Estado:** fase A construida (22-nov-2026), lista para conectar con Firebase. Ver `GUIA_NOTIFICACIONES_FASE_A.md`.
+**Estado:** fase A probada con éxito (22-nov-2026). **Fase C activa desde el 23-nov-2026** en Tesorería: recordatorio de pago a cada miembro que activó las notificaciones. El aviso de voz y voto queda **solo por correo** (decisión del 23-nov). Contraloría sigue enviando solo a afonseca@.
 **Nivel 1** (avisos generales en `avisos.json`) ya está construido en este repositorio.
 
 ## 1. Qué resuelve
@@ -29,8 +29,8 @@ Notificaciones **personales** que llegan al celular aunque la app esté cerrada,
 ## 3. Qué notificaciones (propuesta inicial)
 | Tablero | Notificación | Cuándo | A quién |
 |---|---|---|---|
-| Tesorería | Tu cuota con descuento vence el día 10 | Día 8 | Miembros con saldo |
-| Tesorería | Aviso antes de perder voz y voto | Día 14 (junto con el correo actual) | Miembros con 4 meses de mora |
+| Tesorería | Recordatorio de pago (con descuento / saldo pendiente) | Días 2 y 11, con el correo de recordatorio | Miembros con algo por pagar |
+| Tesorería | ~~Aviso antes de perder voz y voto~~ | — | **No se hace por la app** (queda solo por correo) |
 | Tesorería | Se registró tu pago | Al registrar el pago | El miembro |
 | Contraloría | Obligación que vence hoy / hallazgo asignado | Proceso diario | **Solo afonseca@ mientras exista el bloqueo** |
 | Contraloría | Resumen diario listo | 11:30 p. m. | **Solo afonseca@** |
