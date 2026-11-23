@@ -41,6 +41,7 @@ Los avisos salen arriba de los botones, iguales para todos. Para publicar uno, e
 - `tipo`: `importante` (amarillo, va primero) o `info` (azul).
 - `desde` / `hasta`: fechas `AAAA-MM-DD`. Antes de `desde` no se ve; después de `hasta` desaparece solo. Ambas son opcionales.
 - `enlace`: opcional; solo se aceptan enlaces `https://`.
+- `notificar`: opcional. Con `true`, Tesorería también lo envía **al celular** de todos los que activaron las notificaciones (una sola vez, entre 7 a. m. y 9 p. m., en los 30 minutos siguientes a publicarlo). Úsalo solo para avisos importantes.
 - Cada aviso nuevo sale con la etiqueta «Nuevo» y el ícono de la app muestra cuántos hay sin leer (Android y iPhone con la app instalada). «Marcar como leídos» lo recuerda en ese celular.
 - Si el archivo tiene un error de formato, simplemente no salen avisos: el resto del lanzador funciona igual. Revisa las comas entre bloques.
 
