@@ -1,11 +1,12 @@
 {
   "activas": false,
   "firebase": {
-    "apiKey": "",
-    "authDomain": "",
-    "projectId": "",
-    "messagingSenderId": "",
-    "appId": ""
+    "apiKey": "AIzaSyDqNYQJi1UJv23rMJr1ZrB0YVoDjPUBUc0",
+    "authDomain": "jci-bogota-notificaciones.firebaseapp.com",
+    "projectId": "jci-bogota-notificaciones",
+    "storageBucket": "jci-bogota-notificaciones.firebasestorage.app",
+    "messagingSenderId": "81506835982",
+    "appId": "1:81506835982:web:342355c7253d45b4cc265f"
   },
   "vapidKey": ""
 }
