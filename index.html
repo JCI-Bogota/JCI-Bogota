@@ -99,7 +99,7 @@ fetch('apps.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(f
   (cfg.apps||[]).forEach(function(a){
     var u=urlSegura(a.url), svg='<svg viewBox="0 0 24 24">'+(ICONOS[a.icono]||ICONOS.documento)+'</svg>';
     var cuerpo='<span class="ico">'+svg+'</span><span class="txt"><b>'+esc(a.nombre)+'</b><span>'+esc(a.descripcion)+'</span></span>';
-    if(u){ l.insertAdjacentHTML('beforeend','<a class="card" data-base="'+esc(u)+'" href="'+esc(conPush(u))+'" target="_blank" rel="noopener">'+cuerpo+'<span class="ir">Abrir '+FLECHA+'</span></a>'); }
+    if(u){ l.insertAdjacentHTML('beforeend','<a class="card" data-id="'+esc(a.id)+'" data-base="'+esc(u)+'" href=""'+esc(conPush(u))+'" target="_blank" rel="noopener">'+cuerpo+'<span class="ir">Abrir '+FLECHA+'</span></a>'); }
     else { l.insertAdjacentHTML('beforeend','<div class="card" aria-disabled="true">'+cuerpo+'<span class="pronto">Próximamente</span></div>'); }
   });
 }).catch(function(){document.getElementById('lista').innerHTML='<div class="err">No pude cargar la lista de procesos. Revisa tu conexión e inténtalo de nuevo.</div>';});
@@ -138,6 +138,11 @@ function instalada(){return (window.matchMedia&&matchMedia('(display-mode: stand
 function codigoPush(){try{return localStorage.getItem('jci-push-codigo')||'';}catch(e){return '';}}
 /* El tablero guarda «este correo ↔ este celular» al abrirse; la identidad la pone Google, no el enlace. */
 function conPush(u){var c=codigoPush();if(!c)return u;try{var x=new URL(u);x.searchParams.set('push',c);x.searchParams.set('disp',plataforma());return x.href;}catch(e){return u;}}
+/* Registro en Tesorería: cuando la persona abre Tesorería desde la app con su código, el tablero guarda su celular. */
+function registradoEn(id){try{var c=codigoPush();return !!c&&localStorage.getItem('jci-push-reg-'+id)===c;}catch(e){return false;}}
+function marcarRegistro(id){try{var c=codigoPush();if(c)localStorage.setItem('jci-push-reg-'+id,c);}catch(e){}}
+document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a.card[data-id]');if(a&&codigoPush()){marcarRegistro(a.getAttribute('data-id'));setTimeout(revisarPanel,500);}});
+function urlTesoreria(){var a=document.querySelector('a.card[data-id="tesoreria"]');return a?conPush(a.getAttribute('data-base')):'';}
 function actualizarEnlaces(){Array.prototype.forEach.call(document.querySelectorAll('a.card[data-base]'),function(a){a.href=conPush(a.getAttribute('data-base'));});}
 function cargarScript(src){return new Promise(function(ok,mal){var s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=mal;document.head.appendChild(s);});}
 var NOTIF_CFG=null;
@@ -147,6 +152,14 @@ function obtenerCodigo(){
     .then(function(){return navigator.serviceWorker.ready;})
     .then(function(reg){if(!firebase.apps.length)firebase.initializeApp(NOTIF_CFG.firebase);return firebase.messaging().getToken({vapidKey:NOTIF_CFG.vapidKey,serviceWorkerRegistration:reg});})
     .then(function(c){if(!c)throw new Error('sin código');try{localStorage.setItem('jci-push-codigo',c);}catch(e){}actualizarEnlaces();return c;});
+}
+function ocultarNotif(){document.getElementById('notif').hidden=true;}
+/* Con permiso y código: si ya abrió Tesorería con este código, el panel desaparece; si no, queda solo el último paso. */
+function revisarPanel(){
+  if(!NOTIF_CFG||!('Notification' in window)||Notification.permission!=='granted'||!codigoPush())return;
+  if(registradoEn('tesoreria')){ocultarNotif();return;}
+  var btn=document.getElementById('notif-btn');pintarNotif('activar','Último paso: abre Tesorería una vez desde aquí para recibir sus avisos.');
+  btn.textContent='Abrir Tesorería';btn.onclick=function(){var u=urlTesoreria();if(u){marcarRegistro('tesoreria');window.open(u,'_blank','noopener');setTimeout(revisarPanel,500);}};
 }
 function pintarNotif(estado,texto){
   var caja=document.getElementById('notif'),btn=document.getElementById('notif-btn');caja.hidden=false;document.getElementById('notif-txt').textContent=texto;
@@ -159,8 +172,8 @@ function iniciarNotif(){
   }
   if(Notification.permission==='denied'){pintarNotif('no','Bloqueaste las notificaciones. Actívalas en los ajustes del navegador para esta app.');return;}
   if(Notification.permission==='granted'){
-    pintarNotif('activas','Este celular recibe los avisos. Abre cada tablero una vez para quedar registrado en él.');
-    obtenerCodigo().catch(function(){});   // renueva el código en silencio (Firebase lo cambia de vez en cuando)
+    ocultarNotif();
+    obtenerCodigo().then(revisarPanel).catch(function(){revisarPanel();});   // renueva el código en silencio; si cambió, pide abrir Tesorería otra vez
     return;
   }
   pintarNotif('activar','Recibe en este celular los avisos de tus tableros.');
@@ -168,7 +181,7 @@ function iniciarNotif(){
     pintarNotif('trabajando','Acepta el permiso que pide el celular.');
     Notification.requestPermission().then(function(p){
       if(p!=='granted'){pintarNotif(p==='denied'?'no':'activar',p==='denied'?'No se activaron. Puedes cambiarlo en los ajustes del navegador.':'Recibe en este celular los avisos de tus tableros.');return;}
-      return obtenerCodigo().then(function(){pintarNotif('activas','Listo. Ahora abre Tesorería y Contraloría una vez desde aquí para quedar registrado.');});
+      return obtenerCodigo().then(revisarPanel);
     }).catch(function(){pintarNotif('activar','No se pudo activar. Revisa tu conexión e inténtalo de nuevo.');});
   };
 }
