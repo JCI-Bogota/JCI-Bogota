@@ -1,5 +1,5 @@
 /* Guarda la carcasa para abrir sin conexión. NO guarda los tableros: esos siempre se abren en vivo. La página y los .json se piden primero a la red. */
-const V = 'jci-launcher-v6', ARCHIVOS = ['./', './index.html', './logo.png', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
+const V = 'jci-launcher-v7', ARCHIVOS = ['./', './index.html', './logo.png', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => Promise.all(ARCHIVOS.map(a => c.add(a).catch(() => {})))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== V && x !== 'jci-bandeja').map(x => caches.delete(x)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
@@ -25,8 +25,10 @@ self.addEventListener('push', e => {
   /* Bandeja: la notificación también queda en «Avisos» dentro de la app (últimos 60 días, máximo 30) */
   const item = { id: 'n-' + Date.now(), titulo, texto: String(d.texto || '').slice(0, 180), enlace: String(d.enlace || ''), fecha: Date.now() };
   const guardar = caches.open('jci-bandeja').then(c => c.match('bandeja').then(r => r ? r.json() : []).catch(() => []).then(l => {
-    l = [item].concat(l || []).filter(x => Date.now() - x.fecha < 60 * 864e5).slice(0, 30);
-    return c.put('bandeja', new Response(JSON.stringify(l), { headers: { 'Content-Type': 'application/json' } }));
+    l = (l || []).filter(x => Date.now() - x.fecha < 60 * 864e5);
+    if (l.some(x => x.titulo === item.titulo && x.texto === item.texto && item.fecha - x.fecha < 864e5)) return null;   // mismo mensaje en menos de un día: no se repite
+    l = [item].concat(l).slice(0, 30);
+    return l && c.put('bandeja', new Response(JSON.stringify(l), { headers: { 'Content-Type': 'application/json' } }));
   })).then(() => self.clients.matchAll({ includeUncontrolled: true })).then(cs => cs.forEach(c => c.postMessage({ tipo: 'bandeja' }))).catch(() => {});
   e.waitUntil(Promise.all([guardar, self.registration.showNotification(titulo, {
     body: String(d.texto || '').slice(0, 180), icon: 'icon-192.png', badge: 'icon-192.png', lang: 'es-CO',

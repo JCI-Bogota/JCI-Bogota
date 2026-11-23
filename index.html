@@ -54,6 +54,8 @@ footer{text-align:center;font-size:12px;color:var(--gris);padding:10px 20px 24px
 .aviso .fecha{display:block;margin-top:8px;font-size:12px;color:var(--gris)}
 .aviso a{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:13.5px;font-weight:700;color:var(--blue);text-decoration:none}
 .aviso a svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.quitar{border:0;background:none;color:var(--gris);font:600 12.5px 'Plus Jakarta Sans',system-ui,sans-serif;padding:6px 0 0;margin-left:14px;cursor:pointer;text-decoration:underline}
+.quitar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:4px}
 .nuevo{flex:none;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--blanco);background:var(--blue);border-radius:999px;padding:3px 9px}
 .aviso.importante .nuevo{background:#8A6F00}
 .notif{display:flex;align-items:center;gap:12px;background:var(--blanco);border:1px solid var(--linea);border-radius:14px;padding:14px 16px;margin:18px 0 0}
@@ -107,7 +109,7 @@ document.addEventListener('click',function(ev){
   var app=APPS.filter(function(x){return x.id===b.getAttribute('data-bloq');})[0];if(!app)return;
   var k=window.prompt((app.restringida.etiqueta||'Restringido')+'. Si tienes la clave, escríbela para habilitarlo en este celular:');
   if(!k)return;
-  sha256('jci-bogota|'+k.trim()).then(function(h){
+  sha256('jci-bogota|'+k.replace(/\s+/g,'').toUpperCase()).then(function(h){
     if(h===app.restringida.claveSha256){try{localStorage.setItem('jci-app-'+app.id,'1');}catch(e){}pintarApps();}
     else window.alert('Clave incorrecta.');
   });
@@ -140,7 +142,7 @@ function pintarAvisos(lista){
     return '<article class="aviso'+(a.tipo==='importante'?' importante':'')+'"><div class="aviso-top"><b>'+esc(a.titulo)+'</b>'+(nuevo?'<span class="nuevo">Nuevo</span>':'')+'</div>'+
       (a.texto?'<p>'+esc(a.texto)+'</p>':'')+
       (u?'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(a.enlace.texto||'Ver más')+' '+FLECHA+'</a>':'')+
-      (a.recibido?'<span class="fecha">Recibido el '+esc(a.recibido)+'</span>':(a.desde||a.hasta)?'<span class="fecha">'+[a.desde?'Publicado el '+esc(fechaTxt(a.desde)):'',a.hasta?'visible hasta el '+esc(fechaTxt(a.hasta)):''].filter(Boolean).join(' · ')+'</span>':'')+'</article>';
+      (a.recibido?'<span class="fecha">Recibido el '+esc(a.recibido)+'<button type="button" class="quitar" data-quitar="'+esc(a.id)+'">Quitar</button></span>':(a.desde||a.hasta)?'<span class="fecha">'+[a.desde?'Publicado el '+esc(fechaTxt(a.desde)):'',a.hasta?'visible hasta el '+esc(fechaTxt(a.hasta)):''].filter(Boolean).join(' · ')+'</span>':'')+'</article>';
   }).join('');
   caja.hidden=false; btn.hidden=!nuevos; ponerInsignia(nuevos);
   btn.onclick=function(){guardarLeidos(leidos.concat(lista.map(function(a){return a.id;})));pintarAvisos(lista);};
@@ -165,6 +167,14 @@ function refrescarAvisos(){
     pintarAvisos(imp.concat(recibidas,resto));
   });
 }
+/* «Quitar»: borra de Avisos una notificación recibida (solo en este celular). */
+document.addEventListener('click',function(ev){
+  var b=ev.target.closest&&ev.target.closest('button.quitar[data-quitar]');if(!b||!('caches' in window))return;
+  var id=b.getAttribute('data-quitar');
+  caches.open('jci-bandeja').then(function(c){return c.match('bandeja').then(function(r){return r?r.json():[];}).then(function(l){
+    return c.put('bandeja',new Response(JSON.stringify((l||[]).filter(function(n){return n.id!==id;})),{headers:{'Content-Type':'application/json'}}));
+  });}).then(refrescarAvisos).catch(function(){});
+});
 fetch('avisos.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(cfg){AVISOS_JSON=cfg.avisos||[];}).catch(function(){AVISOS_JSON=[];}).then(refrescarAvisos);
 if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',function(e){if(e.data&&e.data.tipo==='bandeja')refrescarAvisos();});
 document.addEventListener('visibilitychange',function(){if(!document.hidden)refrescarAvisos();});
