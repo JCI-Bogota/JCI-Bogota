@@ -174,7 +174,8 @@ function plataforma(){var u=navigator.userAgent||'';return /iPhone|iPad|iPod/.te
 function instalada(){return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
 function codigoPush(){try{return localStorage.getItem('jci-push-codigo')||'';}catch(e){return '';}}
 /* El tablero guarda «este correo ↔ este celular» al abrirse; la identidad la pone Google, no el enlace. */
-function conPush(u){var c=codigoPush();if(!c)return u;try{var x=new URL(u);x.searchParams.set('push',c);x.searchParams.set('disp',plataforma());return x.href;}catch(e){return u;}}
+function idCelular(){try{var i=localStorage.getItem('jci-celular');if(!i){i=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2)).toLowerCase();localStorage.setItem('jci-celular',i);}return i;}catch(e){return '';}}
+function conPush(u){var c=codigoPush();if(!c)return u;try{var x=new URL(u);x.searchParams.set('push',c);x.searchParams.set('disp',plataforma());var i=idCelular();if(i)x.searchParams.set('cel',i);return x.href;}catch(e){return u;}}
 /* Registro en Tesorería: cuando la persona abre Tesorería desde la app con su código, el tablero guarda su celular. */
 function registradoEn(id){try{var c=codigoPush();return !!c&&localStorage.getItem('jci-push-reg-'+id)===c;}catch(e){return false;}}
 function marcarRegistro(id){try{var c=codigoPush();if(c)localStorage.setItem('jci-push-reg-'+id,c);}catch(e){}}

@@ -1,5 +1,5 @@
-/* Guarda la carcasa para abrir rápido. NO guarda los tableros: esos siempre se abren en vivo. apps.json y avisos.json se piden primero a la red. */
-const V = 'jci-launcher-v5', ARCHIVOS = ['./', './index.html', './logo.png', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
+/* Guarda la carcasa para abrir sin conexión. NO guarda los tableros: esos siempre se abren en vivo. La página y los .json se piden primero a la red. */
+const V = 'jci-launcher-v6', ARCHIVOS = ['./', './index.html', './logo.png', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => Promise.all(ARCHIVOS.map(a => c.add(a).catch(() => {})))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== V && x !== 'jci-bandeja').map(x => caches.delete(x)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
@@ -7,6 +7,11 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET' || u.origin !== location.origin) return;
   if (/(apps|avisos|notificaciones)\.json$/.test(u.pathname)) {
     e.respondWith(fetch(e.request).then(r => { const c = r.clone(); caches.open(V).then(x => x.put(e.request, c)); return r; }).catch(() => caches.match(e.request)));
+    return;
+  }
+  /* La página (index.html) se pide primero a la red para que las actualizaciones lleguen solas; sin conexión, la guardada. */
+  if (e.request.mode === 'navigate' || u.pathname.endsWith('/') || u.pathname.endsWith('index.html')) {
+    e.respondWith(fetch(e.request).then(r => { const c = r.clone(); caches.open(V).then(x => x.put(e.request, c)); return r; }).catch(() => caches.match(e.request).then(r => r || caches.match('./index.html'))));
     return;
   }
   e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
