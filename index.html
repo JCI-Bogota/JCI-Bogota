@@ -248,6 +248,46 @@ button.btn:not(:disabled):active,.pys-btn:not(:disabled):active,.busq-btn:not(:d
 .nav-btn{border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 1px rgba(255,255,255,.35),inset 0 0 10px rgba(255,255,255,.08),0 10px 26px rgba(19,15,45,.28)}
 @media(max-width:760px){ .btn-rec svg,.header .tit-icono{width:18px;height:18px} .btn-rec,.header .tit-icono{padding:6px} }
 @media (prefers-reduced-transparency:reduce){ .kpi{background:#fff!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important} .lg-indicador{background:var(--sv-azul-25)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important} }
+/* ---------- Color en vidrio (cambio 48): los colores del manual como TINTES translúcidos, no como bloques sólidos ----------
+   El manual permite tintes al 75, 50 y 25 %. Sobre el vidrio se usan así: color de la marca a media opacidad + brillo blanco arriba
+   + canto de luz, para que se vea lo de atrás. El texto va en navy o negro sobre los tintes claros (contraste), y en blanco solo sobre navy.
+   No cambian: la lente de la pestaña y el botón «Menú», que ya tienen este equilibrio. */
+:root{
+  --tv-brillo:radial-gradient(120% 70% at 50% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 62%);
+  --tv-azul:linear-gradient(180deg,rgba(127,203,235,.62),rgba(0,151,215,.38));
+  --tv-azul-claro:linear-gradient(180deg,rgba(191,229,245,.75),rgba(127,203,235,.45));
+  --tv-navy:linear-gradient(180deg,rgba(31,71,137,.78),rgba(31,71,137,.6));
+  --tv-amarillo:linear-gradient(180deg,rgba(239,196,15,.55),rgba(239,196,15,.34));
+  --tv-teal:linear-gradient(180deg,rgba(87,188,188,.5),rgba(87,188,188,.3));
+  --tv-canto:inset 0 1.5px 1px rgba(255,255,255,.95),inset 0 -1px 1px rgba(255,255,255,.45),inset 0 0 10px rgba(255,255,255,.35);
+}
+/* Botón principal: vidrio azul translúcido con texto navy */
+button.btn:not(.sec),.pys-btn:not(.sec),.busq-btn{background:var(--tv-brillo),var(--tv-azul);color:var(--sv-navy);font-weight:700;
+  border:1px solid rgba(255,255,255,.8);box-shadow:var(--tv-canto),0 0 0 1px rgba(0,151,215,.28),0 6px 16px rgba(0,151,215,.20);
+  -webkit-backdrop-filter:blur(10px) saturate(180%);backdrop-filter:blur(10px) saturate(180%)}
+button.btn:not(.sec):not(:disabled):hover,.pys-btn:not(.sec):not(:disabled):hover,.busq-btn:not(:disabled):hover{box-shadow:var(--tv-canto),0 0 0 1px rgba(0,151,215,.4),0 10px 22px rgba(0,151,215,.28)}
+button.btn.dark{background:var(--tv-brillo),var(--tv-navy);color:#fff;text-shadow:0 1px 2px rgba(19,15,45,.3)}
+/* Subsección activa: vidrio navy (aquí sí texto blanco) */
+.subnav button.on,.subnav2 button.on{background:var(--tv-brillo),var(--tv-navy);color:#fff;border-color:rgba(255,255,255,.55);box-shadow:var(--tv-canto),0 4px 12px rgba(31,71,137,.22);text-shadow:0 1px 2px rgba(19,15,45,.25)}
+/* Contadores: píldoras de vidrio teñido */
+.badge{background:var(--tv-brillo),var(--tv-amarillo);color:var(--sv-negro);border:1px solid rgba(255,255,255,.75);box-shadow:var(--tv-canto),0 2px 6px rgba(19,15,45,.14)}
+.badge.urg{background:var(--tv-brillo),var(--tv-navy);color:#fff;border-color:rgba(255,255,255,.5);box-shadow:var(--tv-canto),0 2px 6px rgba(31,71,137,.25)}
+/* Barras de los indicadores: más finas, redondeadas y con degradado translúcido */
+.kpi::before{width:4px;top:12px;bottom:12px;left:7px;border-radius:4px;background:linear-gradient(180deg,rgba(0,151,215,.85),rgba(0,151,215,.35))}
+.kpi.k-ok::before,.kpi.t-teal::before{background:linear-gradient(180deg,rgba(87,188,188,.9),rgba(87,188,188,.35))}
+.kpi.k-warn::before,.kpi.t-yellow::before{background:linear-gradient(180deg,rgba(239,196,15,.9),rgba(239,196,15,.35))}
+.kpi.k-bad::before,.kpi.t-navy::before{background:linear-gradient(180deg,rgba(31,71,137,.85),rgba(31,71,137,.35))}
+.kpi.t-black::before{background:linear-gradient(180deg,rgba(19,15,45,.75),rgba(19,15,45,.3))}
+/* Ícono de los avisos (toast) y punto de novedades */
+.toast .ti{background:var(--tv-brillo),var(--tv-azul);color:var(--sv-navy);border:1px solid rgba(255,255,255,.7)}
+.toast.ok .ti{background:var(--tv-brillo),var(--tv-teal);color:var(--sv-negro)}
+.toast.aviso .ti{background:var(--tv-brillo),var(--tv-amarillo);color:var(--sv-negro)}
+.toast.error .ti{background:var(--tv-brillo),var(--tv-navy);color:#fff}
+.toast{border-left-color:rgba(255,255,255,.75)!important}
+.nuevo{background:var(--tv-brillo),var(--tv-azul)}
+/* Etiquetas de estado: tinte + canto de luz */
+.est,.pill{border:1px solid rgba(255,255,255,.7);box-shadow:inset 0 1px 1px rgba(255,255,255,.8)}
+@media (prefers-reduced-transparency:reduce){ button.btn:not(.sec),.pys-btn:not(.sec),.busq-btn{background:var(--sv-azul-25)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important} }
 /* ---------- Celular ---------- */
 @media(max-width:760px){
   header,.header{padding:14px 14px 12px;min-height:0;align-items:flex-start}
@@ -301,9 +341,9 @@ button.card[data-bloq],div.card{background:linear-gradient(180deg,rgba(255,255,2
 div.card{cursor:default;border-style:solid}
 /* Íconos: botón de vidrio azul (activo) o transparente (bloqueado / próximamente), como el centro de control */
 .ico{flex:none;width:54px;height:54px;border-radius:18px;display:grid;place-items:center;
-  background:radial-gradient(40px 20px at 50% 0%,rgba(255,255,255,.55),transparent 75%),linear-gradient(180deg,rgba(0,151,215,.95),rgba(0,137,196,.82));
-  border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.8),inset 0 -1px 1px rgba(255,255,255,.3),0 6px 16px rgba(0,151,215,.32)}
-.ico svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  background:var(--tv-brillo),var(--tv-azul);
+  border:1px solid rgba(255,255,255,.8);box-shadow:var(--tv-canto),0 0 0 1px rgba(0,151,215,.25),0 6px 16px rgba(0,151,215,.2)}
+.ico svg{width:28px;height:28px;stroke:var(--sv-navy);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 button.card[data-bloq] .ico,div.card .ico{background:radial-gradient(40px 20px at 50% 0%,rgba(255,255,255,.7),transparent 75%),linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.3));box-shadow:inset 0 1.5px 1px #fff,0 4px 12px rgba(19,15,45,.10)}
 button.card[data-bloq] .ico svg,div.card .ico svg{stroke:var(--sv-negro-75)}
 .txt{flex:1;min-width:0}
@@ -321,20 +361,20 @@ button.card[data-bloq] .ico svg,div.card .ico svg{stroke:var(--sv-negro-75)}
 .aviso,.notif,.nota,.err{position:relative;overflow:hidden;border-radius:22px;padding:15px 16px 15px 20px;margin-bottom:12px;
   background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,.6));border:1px solid rgba(255,255,255,.85);
   box-shadow:inset 0 1.5px 1px #fff,inset 0 0 14px rgba(255,255,255,.45),var(--lg-sombra);-webkit-backdrop-filter:blur(8px) saturate(170%);backdrop-filter:blur(8px) saturate(170%)}
-.aviso::before,.nota::before,.err::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--sv-azul)}
-.aviso.importante::before,.err::before{background:var(--sv-amarillo)}
+.aviso::before,.nota::before,.err::before{content:'';position:absolute;left:7px;top:12px;bottom:12px;width:4px;border-radius:4px;background:linear-gradient(180deg,rgba(0,151,215,.85),rgba(0,151,215,.35))}
+.aviso.importante::before,.err::before{background:linear-gradient(180deg,rgba(239,196,15,.9),rgba(239,196,15,.35))}
 .aviso.importante{background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.62))}
 .aviso b{font-size:15.5px;font-weight:600;line-height:1.35}
 .aviso p{margin:6px 0 0;font-size:14px;color:var(--sv-negro-75);line-height:1.5}
 .aviso .fecha{display:block;margin-top:8px;font-size:12px;color:var(--sv-negro-75)}
 .aviso a{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:13.5px;font-weight:600;color:var(--sv-azul);text-decoration:none}
-.nuevo{flex:none;font-size:11px;font-weight:700;color:#fff;background:var(--sv-azul);border-radius:999px;padding:3px 9px;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 2px 6px rgba(0,151,215,.35)}
-.aviso.importante .nuevo{background:var(--sv-amarillo);color:var(--sv-negro)}
+.nuevo{flex:none;font-size:11px;font-weight:700;color:var(--sv-navy);background:var(--tv-brillo),var(--tv-azul);border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:3px 9px;box-shadow:var(--tv-canto),0 2px 6px rgba(0,151,215,.18)}
+.aviso.importante .nuevo{background:var(--tv-brillo),var(--tv-amarillo);color:var(--sv-negro)}
 .notif{display:flex;align-items:center;gap:12px;padding:14px 16px;margin:18px 0 0}
 .notif .ico{width:44px;height:44px;border-radius:15px}
 .notif .txt b{font-size:15px}
 .notif button{flex:none;border:0;border-radius:999px;color:#fff;font:600 13.5px 'Plus Jakarta Sans',system-ui,sans-serif;padding:10px 16px;cursor:pointer;
-  background:radial-gradient(100px 40px at 50% 0%,rgba(255,255,255,.4),transparent 75%),linear-gradient(180deg,#0097D7,#0089C4);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 4px 12px rgba(0,151,215,.25);transition:transform .38s var(--lg-resorte)}
+  background:var(--tv-brillo),var(--tv-azul);color:var(--sv-navy);font-weight:700;border:1px solid rgba(255,255,255,.8);box-shadow:var(--tv-canto),0 0 0 1px rgba(0,151,215,.28),0 6px 16px rgba(0,151,215,.2);transition:transform .38s var(--lg-resorte)}
 .notif button:active{transform:scale(1.07)}
 .notif button:disabled{background:rgba(255,255,255,.6);color:var(--sv-negro-75);box-shadow:inset 0 1px 1px #fff;cursor:default}
 .nota{font-size:13px;color:var(--sv-navy);line-height:1.5;margin-top:22px}
@@ -375,7 +415,7 @@ footer{text-align:center;font-size:12px;color:var(--sv-negro-75);padding:10px 20
   </div>
   <div class="nota">Entra con tu cuenta <b>@jcibogota.org</b>. Si el celular tiene varias cuentas de Google, elige esa.</div>
 </main>
-<footer>JCI Bogotá · Cámara Junior de Bogotá<br><span style="opacity:.7">Versión del 26-nov-2026 · v10</span></footer>
+<footer>JCI Bogotá · Cámara Junior de Bogotá<br><span style="opacity:.7">Versión del 26-nov-2026 · v11</span></footer>
 <script>
 var ICONOS = {
   moneda: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.2c-.5-.8-1.4-1.2-2.5-1.2-1.4 0-2.4.7-2.4 1.8 0 2.7 5 1.3 5 4 0 1.1-1.1 1.9-2.6 1.9-1.2 0-2.2-.5-2.7-1.4M12 6.5V8m0 8v1.5"/>',
