@@ -31,3 +31,10 @@ No hay cambios en las funciones: avisos, bandeja, notificaciones y clave funcion
 - **Causa:** al cambiar los estilos se perdió la regla que oculta el panel cuando tiene el atributo `hidden`, y el nuevo `display:flex` del panel le ganaba. El código sí detectaba que las notificaciones estaban activas.
 - **Solución:** la regla general `[hidden]{display:none!important}` y `sw.js` en v9.
 - **Probado:** con `hidden` el panel queda oculto, y sin él se ve.
+
+## Corrección 2 (26-nov-2026): el celular seguía mostrando la versión vieja
+- **Causa:** el service worker pedía la página a la red, pero pasando por la caché web de Chrome. GitHub Pages permite guardar cada página hasta 10 minutos, así que durante ese tiempo seguía llegando la versión anterior, aun después de borrar los datos del sitio (que no vacía esa caché).
+- **Solución:**
+  - la página y los `.json` se piden con `cache: 'no-cache'`, así que siempre se consulta al servidor;
+  - `sw.js` sube a v10;
+  - el pie del lanzador muestra «Versión del 26-nov-2026 · v10», para confirmar a simple vista cuál está cargada.
