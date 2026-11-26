@@ -1,17 +1,18 @@
 /* Guarda la carcasa para abrir sin conexión. NO guarda los tableros: esos siempre se abren en vivo. La página y los .json se piden primero a la red. */
-const V = 'jci-launcher-v9', ARCHIVOS = ['./', './index.html', './logo.png', './logo-blanco.webp', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
+const V = 'jci-launcher-v10', ARCHIVOS = ['./', './index.html', './logo.png', './logo-blanco.webp', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => Promise.all(ARCHIVOS.map(a => c.add(a).catch(() => {})))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== V && x !== 'jci-bandeja').map(x => caches.delete(x)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
   const u = new URL(e.request.url);
   if (e.request.method !== 'GET' || u.origin !== location.origin) return;
   if (/(apps|avisos|notificaciones)\.json$/.test(u.pathname)) {
-    e.respondWith(fetch(e.request).then(r => { const c = r.clone(); caches.open(V).then(x => x.put(e.request, c)); return r; }).catch(() => caches.match(e.request)));
+    e.respondWith(fetch(e.request.url, { cache: 'no-cache' }).then(r => { const c = r.clone(); caches.open(V).then(x => x.put(e.request, c)); return r; }).catch(() => caches.match(e.request)));
     return;
   }
   /* La página (index.html) se pide primero a la red para que las actualizaciones lleguen solas; sin conexión, la guardada. */
   if (e.request.mode === 'navigate' || u.pathname.endsWith('/') || u.pathname.endsWith('index.html')) {
-    e.respondWith(fetch(e.request).then(r => { const c = r.clone(); caches.open(V).then(x => x.put(e.request, c)); return r; }).catch(() => caches.match(e.request).then(r => r || caches.match('./index.html'))));
+    /* cache: 'no-cache' = siempre pregunta al servidor si hay versión nueva (la caché web de Chrome podía entregar la vieja hasta 10 minutos) */
+    e.respondWith(fetch(e.request.url, { cache: 'no-cache', credentials: 'same-origin' }).then(r => { const c = r.clone(); caches.open(V).then(x => x.put(e.request, c)); return r; }).catch(() => caches.match(e.request).then(r => r || caches.match('./index.html'))));
     return;
   }
   e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
