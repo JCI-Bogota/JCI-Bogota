@@ -11,73 +11,360 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--blue:#0097D7;--black:#130F2D;--navy:#1F4789;--teal:#57BCBC;--gris:#4E4B62;--linea:#D9E3EC;--fondo:#F4F8FB;--blanco:#fff}
+
+/* =====================================================================================================
+   SISTEMA VISUAL COMPARTIDO · Tesorería y Contraloría (cambio 44)
+   Este bloque es IDÉNTICO en los dos Index.html y va de último para que mande sobre los estilos anteriores.
+   Si se cambia aquí, se cambia igual en el otro tablero. Solo colores del manual JCI v1.4.
+   ===================================================================================================== */
+:root{
+  --sv-azul:#0097D7; --sv-negro:#130F2D; --sv-navy:#1F4789; --sv-teal:#57BCBC; --sv-amarillo:#EFC40F;
+  --sv-azul-50:#7FCBEB; --sv-azul-25:#BFE5F5; --sv-negro-75:#4E4B62; --sv-negro-50:#898796; --sv-linea:#E1EAF2; --sv-fondo:#F2F8FC;
+  --sv-ancho:1780px; --sv-r-chip:999px; --sv-r-boton:10px; --sv-r-ind:16px; --sv-r-tarjeta:16px;
+  --sv-e1:0 1px 3px rgba(19,15,45,.06),0 8px 24px rgba(31,71,137,.06);
+  --sv-e2:0 4px 10px rgba(19,15,45,.08),0 16px 36px rgba(31,71,137,.12);
+  --sv-vidrio:linear-gradient(135deg,rgba(255,255,255,.58) 0%,rgba(255,255,255,.38) 100%); --sv-vidrio-borde:rgba(255,255,255,.75);
+  --sv-vidrio-brillo:inset 0 1px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(255,255,255,.25); --sv-vidrio-osc:rgba(19,15,45,.62); --sv-desenfoque:blur(22px) saturate(180%);
+}
+/* ---------- Encabezado ---------- */
+header,.header{background:var(--sv-negro);color:#fff;padding:40px 44px;min-height:186px;display:flex;align-items:center;position:relative;overflow:hidden}
+.header-inner{max-width:var(--sv-ancho);margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;gap:44px}
+header h1,.header .titulo{margin:0;font-size:38px;font-weight:400;line-height:1.15;letter-spacing:-.8px;display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap}
+.btn-rec svg,.tit-icono{width:26px;height:26px;color:var(--sv-azul);opacity:1}
+.btn-rec{padding:4px;border-radius:50%}
+header .sub,.subtitulo{font-size:15px;font-weight:300;line-height:1.4;opacity:.72;margin-top:12px}
+.logo{height:110px;width:auto}
+.franja{height:8px;background:var(--sv-azul)}
+/* ---------- Contenido ---------- */
+main,.wrap{max-width:var(--sv-ancho);margin:0 auto;padding:32px 44px 70px;box-sizing:border-box}
+/* ---------- Barra de secciones (vidrio) ---------- */
+#navBar{position:sticky;top:8px;z-index:60;display:flex;align-items:center;gap:8px;padding:8px;margin:0 0 20px;
+  border-radius:var(--sv-r-tarjeta)}
+#navBar button{font-family:inherit;cursor:pointer}
+#navBar .nav-tab{font-size:14.5px;font-weight:600;line-height:1.2}
+#navBar .nav-burger{font-size:15px;font-weight:600;line-height:1.2}
+#navDrawer button{font-family:inherit;font-size:16px;font-weight:600}
+.nav-tabs{display:flex;gap:4px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;flex:1;min-width:0}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border:1px solid transparent;background:transparent;color:var(--sv-negro-75);
+  border-radius:var(--sv-r-boton);padding:10px 16px;min-height:44px;font-size:14.5px;font-weight:600;transition:background .18s ease,color .18s ease,box-shadow .18s ease}
+.nav-tab:hover{background:rgba(0,151,215,.08);color:var(--sv-navy)}
+.nav-tab.activa{background:var(--sv-azul);color:#fff;box-shadow:0 4px 14px rgba(0,151,215,.28)}
+.nav-burger{display:none;align-items:center;gap:8px;border:0;background:var(--sv-azul);color:#fff;border-radius:var(--sv-r-boton);padding:10px 14px;min-height:44px;font-size:15px;font-weight:600;box-shadow:0 4px 14px rgba(0,151,215,.28)}
+.nav-actual{color:var(--sv-navy);font-weight:600;font-size:16px}
+#navDrawer{background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);border-radius:0 var(--sv-r-tarjeta) var(--sv-r-tarjeta) 0}
+#navDrawer h3{letter-spacing:0;text-transform:none;font-size:14px;font-weight:600;color:var(--sv-negro-75)}
+#navDrawer button{border-radius:var(--sv-r-boton)}
+#navDrawer button.activa{background:var(--sv-azul);color:#fff}
+#navDrawer button.activa small{color:#fff;opacity:.85}
+#navVelo{background:rgba(19,15,45,.38);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+/* Subsecciones (segundo nivel): píldoras en navy */
+.subnav button,.subnav2 button{border-radius:var(--sv-r-chip);min-height:38px;padding:8px 16px;font-size:14px;font-weight:600;border:1px solid var(--sv-linea);background:rgba(255,255,255,.75);color:var(--sv-negro-75)}
+.subnav button.on,.subnav2 button.on{background:var(--sv-navy);border-color:var(--sv-navy);color:#fff}
+/* Contadores */
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:var(--sv-r-chip);font-size:11.5px;font-weight:700;margin-left:2px;background:var(--sv-amarillo);color:var(--sv-negro)}
+.badge.urg{background:var(--sv-navy);color:#fff}
+.nav-tab.activa .badge{box-shadow:0 0 0 2px rgba(255,255,255,.55)}
+/* ---------- Tarjetas e indicadores ---------- */
+.card{background:#fff;border:0;border-radius:var(--sv-r-tarjeta);box-shadow:var(--sv-e1)}
+.kpi{background:#fff;border-radius:var(--sv-r-ind);padding:20px 22px 18px 24px;position:relative;overflow:hidden;box-shadow:var(--sv-e1);display:flex;flex-direction:column}
+.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--sv-azul)}
+.kpi.k-ok::before,.kpi.t-teal::before{background:var(--sv-teal)}
+.kpi.k-warn::before,.kpi.t-yellow::before{background:var(--sv-amarillo)}
+.kpi.k-bad::before,.kpi.t-navy::before{background:var(--sv-navy)}
+.kpi.t-black::before{background:var(--sv-negro)}
+/* Rótulo arriba, cifra después (Contraloría: .l / .v · Tesorería: .lbl / .val / .nota) */
+.kpi .l,.kpi .lbl{order:-1;font-size:12.5px;font-weight:500;color:var(--sv-negro-75);text-transform:none;letter-spacing:0;line-height:1.35;margin:0}
+.kpi .v,.kpi .val{font-size:30px;font-weight:400;line-height:1.1;letter-spacing:0;margin:8px 0 4px;color:var(--sv-negro);font-variant-numeric:tabular-nums}
+.kpi .val[style]{color:var(--sv-negro)!important}   /* la cifra siempre en negro: el color va en la barra */
+.kpi .nota{font-size:12.5px;font-weight:300;color:var(--sv-negro-75);line-height:1.45}
+.kpis3 .kpi .v,.kpis5 .kpi .v{font-size:26px}
+/* ---------- Botones ---------- */
+button.btn,.pys-btn,.busq-btn{font-family:inherit;font-size:14px;font-weight:600;border-radius:var(--sv-r-boton);padding:11px 18px;min-height:44px;cursor:pointer;
+  background:var(--sv-azul);color:#fff;border:1px solid var(--sv-azul);transition:transform .15s ease,box-shadow .15s ease}
+button.btn.sec,.pys-btn.sec,.busq-limpiar{font-family:inherit;font-size:14px;font-weight:600;border-radius:var(--sv-r-boton);padding:11px 18px;min-height:44px;cursor:pointer;
+  background:rgba(255,255,255,.72);color:var(--sv-navy);border:1px solid var(--sv-navy);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+button.btn:not(:disabled):hover,.pys-btn:not(:disabled):hover,.busq-btn:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,151,215,.28)}
+button.btn.sec:not(:disabled):hover,.pys-btn.sec:not(:disabled):hover,.busq-limpiar:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(31,71,137,.16)}
+button.btn:disabled,.pys-btn:disabled,.busq-btn:disabled{opacity:.5;cursor:default;transform:none;box-shadow:none}
+/* ---------- Etiquetas de estado ---------- */
+.est,.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:var(--sv-r-chip);font-size:11.5px;font-weight:600;white-space:nowrap}
+/* ---------- Vidrio («cristal»): más transparente, con brillo interior y reflejo diagonal ----------
+   El vidrio se percibe por lo que deja ver detrás: el fondo lleva halos de azul, teal y navy (los colores de las ondas). */
+body{background:
+  radial-gradient(1000px 600px at 6% 2%,rgba(0,151,215,.18),transparent 60%),
+  radial-gradient(820px 560px at 98% 36%,rgba(87,188,188,.17),transparent 62%),
+  radial-gradient(760px 560px at 28% 100%,rgba(31,71,137,.12),transparent 60%),
+  radial-gradient(520px 420px at 70% 78%,rgba(0,151,215,.08),transparent 65%), var(--sv-fondo);
+  background-attachment:fixed}
+#navBar{background:var(--sv-vidrio);border:1px solid var(--sv-vidrio-borde);box-shadow:var(--sv-vidrio-brillo),var(--sv-e1);-webkit-backdrop-filter:var(--sv-desenfoque);backdrop-filter:var(--sv-desenfoque)}
+#navDrawer{background:linear-gradient(160deg,rgba(255,255,255,.72),rgba(255,255,255,.52));box-shadow:var(--sv-vidrio-brillo),8px 0 32px rgba(19,15,45,.18);-webkit-backdrop-filter:var(--sv-desenfoque);backdrop-filter:var(--sv-desenfoque)}
+button.btn.sec,.pys-btn.sec,.busq-limpiar{background:var(--sv-vidrio);box-shadow:var(--sv-vidrio-brillo);-webkit-backdrop-filter:blur(12px) saturate(170%);backdrop-filter:blur(12px) saturate(170%)}
+.subnav button,.subnav2 button{background:var(--sv-vidrio);box-shadow:var(--sv-vidrio-brillo);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.subnav button.on,.subnav2 button.on{background:var(--sv-navy);box-shadow:0 4px 12px rgba(31,71,137,.25)}
+.toasts{top:auto;bottom:20px;left:20px;right:auto}
+.toasts .toast,.toast{background:linear-gradient(135deg,rgba(255,255,255,.7),rgba(255,255,255,.5));border:1px solid var(--sv-vidrio-borde);border-left-width:5px;box-shadow:var(--sv-vidrio-brillo),var(--sv-e2);-webkit-backdrop-filter:var(--sv-desenfoque);backdrop-filter:var(--sv-desenfoque)}
+.toast.ok{border-left-color:var(--sv-teal)} .toast.error{border-left-color:var(--sv-navy)} .toast.aviso{border-left-color:var(--sv-amarillo)} .toast.info{border-left-color:var(--sv-azul)}
+.modal-v{background:rgba(19,15,45,.32);-webkit-backdrop-filter:blur(8px) saturate(120%);backdrop-filter:blur(8px) saturate(120%)}
+.modal-c{background:linear-gradient(140deg,rgba(255,255,255,.8),rgba(255,255,255,.62));border:1px solid var(--sv-vidrio-borde);border-radius:var(--sv-r-tarjeta);box-shadow:var(--sv-vidrio-brillo),0 24px 60px rgba(19,15,45,.32);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%)}
+[data-tip]:hover::after,[data-tip]:focus-visible::after{background:var(--sv-vidrio-osc);-webkit-backdrop-filter:blur(12px) saturate(160%);backdrop-filter:blur(12px) saturate(160%);border:1px solid rgba(255,255,255,.14);border-radius:8px}
+[data-tip]:hover::before,[data-tip]:focus-visible::before{border-top-color:var(--sv-vidrio-osc)}
+.nav-btn{background:rgba(19,15,45,.55);border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 8px 24px rgba(19,15,45,.25);-webkit-backdrop-filter:var(--sv-desenfoque);backdrop-filter:var(--sv-desenfoque)}
+.nav-btn:hover{background:rgba(0,151,215,.78)}
+.btn-pdf{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.2);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+@media(max-width:760px){ .toasts{left:16px;right:72px;bottom:16px} }
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){ #navBar,#navDrawer,.toast,.modal-c,button.btn.sec,.pys-btn.sec,.busq-limpiar,.subnav button,.subnav2 button{background:#fff} .nav-btn{background:var(--sv-negro)} }
+@media (prefers-reduced-transparency:reduce){ #navBar,#navDrawer,.toast,.modal-c,button.btn.sec,.pys-btn.sec,.busq-limpiar,.subnav button,.subnav2 button{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none} .nav-btn{background:var(--sv-negro)} body{background:var(--sv-fondo)} }
+/* ---------- Vidrio líquido (cambio 45) · referencia: el cristal de iOS, con los colores del manual JCI ----------
+   1. Muy transparente y con refracción: deforma levemente lo que pasa por detrás (en Chrome y Edge; en los demás, desenfoque fino).
+   2. Brillo especular en el canto superior y reflejo que sigue al puntero.
+   3. Cápsulas que flotan; en la barra de secciones, un indicador de vidrio azul que se desliza a la pestaña elegida.
+   4. Detrás, las ondas de la marca (anillos en cuartos girados 15°), para que el cristal tenga qué refractar.
+   Las tarjetas con cifras siguen opacas: el vidrio es para lo que flota, no para los datos. */
+:root{
+  --lg-tinte:rgba(255,255,255,.16); --lg-tinte-2:rgba(255,255,255,.06);
+  --lg-canto:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.35),inset 1px 0 0 rgba(255,255,255,.35),inset -1px 0 0 rgba(255,255,255,.2);
+  --lg-sombra:0 10px 30px rgba(19,15,45,.10),0 2px 6px rgba(19,15,45,.06);
+  --lg-desenfoque:blur(10px) saturate(190%) brightness(1.06);
+  --mx:50%; --my:0%;
+}
+body{background:
+  url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22780%22%20height%3D%22780%22%20viewBox%3D%220%200%20780%20780%22%3E%3Cpath%20d%3D%22M449.9%20393.7A60%2060%200%200%201%20393.7%20449.9%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M386.3%20449.9A60%2060%200%200%201%20330.1%20393.7%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M330.1%20386.3A60%2060%200%200%201%20386.3%20330.1%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M393.7%20330.1A60%2060%200%200%201%20449.9%20386.3%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M488.6%20423.0A104%20104%200%200%201%20369.3%20491.9%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M357.0%20488.6A104%20104%200%200%201%20288.1%20369.3%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M291.4%20357.0A104%20104%200%200%201%20410.7%20288.1%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M423.0%20291.4A104%20104%200%200%201%20491.9%20410.7%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M513.4%20471.7A148%20148%200%200%201%20324.0%20522.5%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M308.3%20513.4A148%20148%200%200%201%20257.5%20324.0%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M266.6%20308.3A148%20148%200%200%201%20456.0%20257.5%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M471.7%20266.6A148%20148%200%200%201%20522.5%20456.0%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M517.2%20533.8A192%20192%200%200%201%20262.8%20533.8%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M246.2%20517.2A192%20192%200%200%201%20246.2%20262.8%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M262.8%20246.2A192%20192%200%200%201%20517.2%20246.2%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M533.8%20262.8A192%20192%200%200%201%20533.8%20517.2%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M495.3%20601.2A236%20236%200%200%201%20193.2%20520.3%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M178.8%20495.3A236%20236%200%200%201%20259.7%20193.2%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M284.7%20178.8A236%20236%200%200%201%20586.8%20259.7%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M601.2%20284.7A236%20236%200%200%201%20520.3%20586.8%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M445.8%20664.4A280%20280%200%200%201%20124.5%20478.8%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M115.6%20445.8A280%20280%200%200%201%20301.2%20124.5%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M334.2%20115.6A280%20280%200%200%201%20655.5%20301.2%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M664.4%20334.2A280%20280%200%200%201%20478.8%20655.5%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M370.2%20713.4A324%20324%200%200%201%2066.6%20409.8%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M66.6%20370.2A324%20324%200%200%201%20370.2%2066.6%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M409.8%2066.6A324%20324%200%200%201%20713.4%20370.2%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M713.4%20409.8A324%20324%200%200%201%20409.8%20713.4%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3C/svg%3E") no-repeat fixed -240px -260px,
+  url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22780%22%20height%3D%22780%22%20viewBox%3D%220%200%20780%20780%22%3E%3Cpath%20d%3D%22M449.9%20393.7A60%2060%200%200%201%20393.7%20449.9%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M386.3%20449.9A60%2060%200%200%201%20330.1%20393.7%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M330.1%20386.3A60%2060%200%200%201%20386.3%20330.1%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M393.7%20330.1A60%2060%200%200%201%20449.9%20386.3%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M488.6%20423.0A104%20104%200%200%201%20369.3%20491.9%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M357.0%20488.6A104%20104%200%200%201%20288.1%20369.3%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M291.4%20357.0A104%20104%200%200%201%20410.7%20288.1%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M423.0%20291.4A104%20104%200%200%201%20491.9%20410.7%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M513.4%20471.7A148%20148%200%200%201%20324.0%20522.5%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M308.3%20513.4A148%20148%200%200%201%20257.5%20324.0%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M266.6%20308.3A148%20148%200%200%201%20456.0%20257.5%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M471.7%20266.6A148%20148%200%200%201%20522.5%20456.0%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M517.2%20533.8A192%20192%200%200%201%20262.8%20533.8%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M246.2%20517.2A192%20192%200%200%201%20246.2%20262.8%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M262.8%20246.2A192%20192%200%200%201%20517.2%20246.2%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M533.8%20262.8A192%20192%200%200%201%20533.8%20517.2%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M495.3%20601.2A236%20236%200%200%201%20193.2%20520.3%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M178.8%20495.3A236%20236%200%200%201%20259.7%20193.2%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M284.7%20178.8A236%20236%200%200%201%20586.8%20259.7%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M601.2%20284.7A236%20236%200%200%201%20520.3%20586.8%22%20stroke%3D%22%2357BCBC%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M445.8%20664.4A280%20280%200%200%201%20124.5%20478.8%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M115.6%20445.8A280%20280%200%200%201%20301.2%20124.5%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M334.2%20115.6A280%20280%200%200%201%20655.5%20301.2%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M664.4%20334.2A280%20280%200%200%201%20478.8%20655.5%22%20stroke%3D%22%231F4789%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M370.2%20713.4A324%20324%200%200%201%2066.6%20409.8%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M66.6%20370.2A324%20324%200%200%201%20370.2%2066.6%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M409.8%2066.6A324%20324%200%200%201%20713.4%20370.2%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M713.4%20409.8A324%20324%200%200%201%20409.8%20713.4%22%20stroke%3D%22%230097D7%22%20stroke-opacity%3D%220.10%22%20stroke-width%3D%2222%22%20fill%3D%22none%22/%3E%3C/svg%3E") no-repeat fixed calc(100% + 380px) calc(100% + 420px),
+  radial-gradient(1000px 600px at 6% 2%,rgba(0,151,215,.18),transparent 60%),
+  radial-gradient(820px 560px at 98% 36%,rgba(87,188,188,.17),transparent 62%),
+  radial-gradient(760px 560px at 28% 100%,rgba(31,71,137,.12),transparent 60%), var(--sv-fondo)}
+/* Superficie de vidrio líquido */
+#navBar,.toast,.nav-burger,button.btn.sec,.pys-btn.sec,.busq-limpiar,.subnav button,.subnav2 button,.lg{
+  background:
+    radial-gradient(140px 70px at var(--mx) var(--my),rgba(255,255,255,.55),transparent 70%),
+    linear-gradient(180deg,var(--lg-tinte),var(--lg-tinte-2));
+  -webkit-backdrop-filter:var(--lg-desenfoque);backdrop-filter:var(--lg-desenfoque);
+  border:1px solid rgba(255,255,255,.55);box-shadow:var(--lg-canto),var(--lg-sombra)}
+#navBar{position:sticky;border-radius:999px;padding:6px;overflow:visible}
+/* Refracción (Chromium): si el navegador no la entiende, ignora esta línea y queda el desenfoque fino */
+.lg-refracta #navBar,.lg-refracta .toast{-webkit-backdrop-filter:var(--lg-desenfoque);backdrop-filter:url(#jci-liquido) var(--lg-desenfoque)}
+/* Pestañas en cápsula con indicador deslizante */
+.nav-tabs{position:relative;isolation:isolate}
+.nav-tab{border-radius:999px;position:relative;z-index:1;background:transparent!important;box-shadow:none!important}
+.nav-tab.activa{color:#fff}
+.nav-tab:not(.activa):hover{color:var(--sv-navy);background:rgba(255,255,255,.35)!important}
+.lg-indicador{position:absolute;z-index:0;top:0;left:0;height:100%;width:0;border-radius:999px;pointer-events:none;
+  background:
+    radial-gradient(90px 40px at 50% 0%,rgba(255,255,255,.55),transparent 75%),
+    linear-gradient(180deg,rgba(0,151,215,.92),rgba(0,151,215,.78));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 -1px 0 rgba(19,15,45,.18),0 6px 18px rgba(0,151,215,.35);
+  transition:transform .42s cubic-bezier(.2,.9,.25,1.15),width .42s cubic-bezier(.2,.9,.25,1.15)}
+.nav-burger{border-radius:999px;color:#fff;background:
+    radial-gradient(90px 40px at 50% 0%,rgba(255,255,255,.5),transparent 75%),linear-gradient(180deg,rgba(0,151,215,.92),rgba(0,151,215,.78));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.75),0 6px 18px rgba(0,151,215,.32)}
+/* Botones y subsecciones en cápsula */
+button.btn,.pys-btn,.busq-btn{border-radius:999px}
+button.btn:not(.sec){background:
+    radial-gradient(120px 50px at 50% 0%,rgba(255,255,255,.4),transparent 75%),linear-gradient(180deg,#0097D7,#0089C4);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 4px 12px rgba(0,151,215,.25)}
+button.btn.sec,.pys-btn.sec,.busq-limpiar{color:var(--sv-navy);border-color:rgba(31,71,137,.35);border-radius:999px}
+.subnav button.on,.subnav2 button.on{background:radial-gradient(90px 40px at 50% 0%,rgba(255,255,255,.35),transparent 75%),linear-gradient(180deg,rgba(31,71,137,.95),rgba(31,71,137,.85));
+  border-color:rgba(255,255,255,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 4px 12px rgba(31,71,137,.25)}
+/* Avisos, ventanas, menú y tooltips */
+.toasts .toast,.toast{border-radius:22px;border-left-width:1px;padding:12px 14px}
+.toast .ti{box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+.modal-v{background:rgba(19,15,45,.24);-webkit-backdrop-filter:blur(10px) saturate(140%);backdrop-filter:blur(10px) saturate(140%)}
+.modal-c{border-radius:28px;background:radial-gradient(260px 120px at 30% 0%,rgba(255,255,255,.75),transparent 70%),linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,255,255,.48));
+  box-shadow:var(--lg-canto),0 30px 70px rgba(19,15,45,.30);-webkit-backdrop-filter:blur(26px) saturate(190%);backdrop-filter:blur(26px) saturate(190%)}
+#navDrawer{border-radius:0 28px 28px 0;background:linear-gradient(160deg,rgba(255,255,255,.62),rgba(255,255,255,.42));box-shadow:var(--lg-canto),12px 0 40px rgba(19,15,45,.2)}
+#navDrawer button.activa{background:radial-gradient(90px 40px at 50% 0%,rgba(255,255,255,.5),transparent 75%),linear-gradient(180deg,rgba(0,151,215,.92),rgba(0,151,215,.78));box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+[data-tip]:hover::after,[data-tip]:focus-visible::after{border-radius:14px;background:rgba(19,15,45,.55);-webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 8px 20px rgba(19,15,45,.25)}
+[data-tip]:hover::before,[data-tip]:focus-visible::before{border-top-color:rgba(19,15,45,.55)}
+.nav-btn{border-radius:999px;background:radial-gradient(90px 40px at 50% 0%,rgba(255,255,255,.22),transparent 75%),rgba(19,15,45,.45)}
+/* Accesibilidad y respaldo */
+@media(max-width:760px){ #navBar{border-radius:26px} }
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){ #navBar,.toast,.nav-burger,button.btn.sec,.pys-btn.sec,.busq-limpiar,.subnav button,.subnav2 button,.modal-c,#navDrawer{background:#fff} }
+@media (prefers-reduced-transparency:reduce){ #navBar,.toast,button.btn.sec,.pys-btn.sec,.busq-limpiar,.subnav button,.subnav2 button,.modal-c,#navDrawer{background:#fff!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important} body{background:var(--sv-fondo)} }
+@media (prefers-reduced-motion:reduce){ .lg-indicador{transition:none} }
+/* ---------- Vidrio líquido claro (cambio 46) · referencia: el video de iOS, con el manual JCI ----------
+   Vidrio CLARO (casi sin esmerilado): lo de atrás se ve nítido; la refracción se concentra en el canto, como una lupa;
+   canto grueso con luz arriba y reflejo abajo; sombra proyectada; al pulsar, el vidrio crece con rebote. */
+:root{
+  --lg-tinte:rgba(255,255,255,.10); --lg-tinte-2:rgba(255,255,255,.02);
+  --lg-desenfoque:blur(2.5px) saturate(185%) brightness(1.05);
+  --lg-canto:inset 0 1.5px 1px rgba(255,255,255,.95),inset 0 -1.5px 1px rgba(255,255,255,.55),inset 0 0 14px rgba(255,255,255,.45),inset 0 0 2px rgba(255,255,255,.6);
+  --lg-sombra:0 14px 30px rgba(19,15,45,.16),0 3px 8px rgba(19,15,45,.08);
+  --lg-resorte:cubic-bezier(.34,1.56,.64,1);
+}
+#navBar,.toast,button.btn.sec,.pys-btn.sec,.busq-limpiar,.subnav button,.subnav2 button,.lg{
+  background:
+    radial-gradient(160px 60px at var(--mx) var(--my),rgba(255,255,255,.45),transparent 70%),
+    linear-gradient(180deg,var(--lg-tinte),var(--lg-tinte-2));
+  border:1px solid rgba(255,255,255,.7);box-shadow:var(--lg-canto),var(--lg-sombra)}
+/* Refracción de lupa en el canto (Chromium de computador) */
+.lg-refracta #navBar,.lg-refracta .toast,.lg-refracta button.btn.sec,.lg-refracta .busq-limpiar{-webkit-backdrop-filter:var(--lg-desenfoque);backdrop-filter:url(#jci-lupa) var(--lg-desenfoque)}
+/* Al pulsar, el vidrio crece y rebota */
+button.btn,.pys-btn,.busq-btn,.busq-limpiar,.nav-tab,.nav-burger,.subnav button,.subnav2 button,.nav-btn{transition:transform .38s var(--lg-resorte),box-shadow .2s ease,background .2s ease}
+button.btn:not(:disabled):active,.pys-btn:not(:disabled):active,.busq-btn:not(:disabled):active,.busq-limpiar:active,.nav-tab:active,.nav-burger:active,.subnav button:active,.subnav2 button:active,.nav-btn:active{transform:scale(1.07);transition:transform .12s ease-out}
+/* Indicador de la pestaña: vidrio grueso teñido de azul que se estira al moverse */
+.lg-indicador{background:
+    radial-gradient(120px 30px at 50% 0%,rgba(255,255,255,.65),transparent 75%),
+    radial-gradient(120px 26px at 50% 100%,rgba(255,255,255,.28),transparent 75%),
+    linear-gradient(180deg,rgba(0,151,215,.9),rgba(0,137,196,.82));
+  box-shadow:inset 0 1.5px 1px rgba(255,255,255,.9),inset 0 -1.5px 1px rgba(255,255,255,.35),inset 0 0 10px rgba(255,255,255,.3),0 8px 20px rgba(0,151,215,.35);
+  transition:transform .5s var(--lg-resorte),width .5s var(--lg-resorte)}
+.lg-indicador.estira{animation:estira .5s var(--lg-resorte)}
+@keyframes estira{0%{scale:1 1}35%{scale:1.12 .86}70%{scale:.97 1.04}100%{scale:1 1}}
+@media (prefers-reduced-motion:reduce){ .lg-indicador.estira{animation:none} button.btn:active,.nav-tab:active,.pys-btn:active,.busq-btn:active{transform:none} }
+/* ---------- Referencias iOS consolidadas (cambio 47), con el manual JCI ----------
+   · Selección = lente de vidrio claro con canto de colores (azul, teal y amarillo de la marca en vez del arcoíris); la pestaña elegida se agranda un poco.
+   · Indicadores = paneles de vidrio grueso con lupa en el canto (como los widgets).
+   · Íconos = botones circulares de vidrio teñidos de azul.
+   · Contadores = píldora brillante con sombra. */
+.lg-indicador{z-index:0;
+  background:
+    radial-gradient(120px 26px at 50% 0%,rgba(255,255,255,.75),transparent 75%),
+    linear-gradient(180deg,rgba(255,255,255,.30),rgba(191,229,245,.18));
+  border:1px solid rgba(255,255,255,.9);
+  box-shadow:inset 0 1.5px 1px #fff,inset 0 -1.5px 1px rgba(255,255,255,.7),
+    inset 2.5px 0 3px rgba(0,151,215,.55),inset -2.5px 0 3px rgba(87,188,188,.6),inset 0 -3px 5px rgba(239,196,15,.28),
+    0 8px 22px rgba(0,151,215,.22),0 2px 6px rgba(19,15,45,.10);
+  -webkit-backdrop-filter:saturate(170%) brightness(1.04);backdrop-filter:saturate(170%) brightness(1.04)}
+.nav-tab.activa{color:var(--sv-navy);font-weight:700;transform:scale(1.06)}   /* la lente «agranda» la pestaña elegida */
+.nav-tab.activa .badge{box-shadow:0 0 0 2px #fff}
+/* Indicadores en vidrio grueso */
+.kpi{background:linear-gradient(180deg,rgba(255,255,255,.80),rgba(255,255,255,.64));border:1px solid rgba(255,255,255,.85);
+  box-shadow:inset 0 1.5px 1px #fff,inset 0 -1px 1px rgba(255,255,255,.6),inset 0 0 16px rgba(255,255,255,.5),var(--lg-sombra);
+  -webkit-backdrop-filter:blur(6px) saturate(170%);backdrop-filter:blur(6px) saturate(170%)}
+.lg-refracta .kpi{-webkit-backdrop-filter:blur(6px) saturate(170%);backdrop-filter:url(#jci-lupa) blur(4px) saturate(170%)}
+/* Botón de actualizar: círculo de vidrio azul (mismo tamaño en los dos encabezados) */
+.btn-rec,.header .tit-icono{box-sizing:content-box;padding:7px;border-radius:50%;
+  background:radial-gradient(30px 16px at 50% 0%,rgba(255,255,255,.45),transparent 75%),linear-gradient(180deg,rgba(0,151,215,.38),rgba(0,151,215,.22));
+  border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 4px 14px rgba(0,151,215,.3);color:#fff!important;opacity:1!important;
+  -webkit-backdrop-filter:blur(8px) saturate(170%);backdrop-filter:blur(8px) saturate(170%);transition:transform .38s var(--lg-resorte)}
+.btn-rec svg,.header .tit-icono{width:22px;height:22px}
+.btn-rec svg{color:#fff}
+.btn-rec:active,.header .titulo:active .tit-icono{transform:scale(1.1)}
+/* Contadores: píldora brillante */
+.badge{box-shadow:inset 0 1px 1px rgba(255,255,255,.7),0 2px 6px rgba(19,15,45,.22)}
+.badge.urg{box-shadow:inset 0 1px 1px rgba(255,255,255,.35),0 2px 6px rgba(31,71,137,.35)}
+/* Botones flotantes de Tesorería: círculos/cápsulas de vidrio oscuro */
+.nav-btn{border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 1px rgba(255,255,255,.35),inset 0 0 10px rgba(255,255,255,.08),0 10px 26px rgba(19,15,45,.28)}
+@media(max-width:760px){ .btn-rec svg,.header .tit-icono{width:18px;height:18px} .btn-rec,.header .tit-icono{padding:6px} }
+@media (prefers-reduced-transparency:reduce){ .kpi{background:#fff!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important} .lg-indicador{background:var(--sv-azul-25)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important} }
+/* ---------- Celular ---------- */
+@media(max-width:760px){
+  header,.header{padding:14px 14px 12px;min-height:0;align-items:flex-start}
+  .header-inner{gap:12px;align-items:flex-start}
+  header h1,.header .titulo{font-size:21px;line-height:1.2;letter-spacing:-.3px;gap:8px}
+  .btn-rec svg,.tit-icono{width:20px;height:20px}
+  header .sub,.subtitulo{font-size:12px;line-height:1.35;margin-top:6px;opacity:.8}
+  .logo{height:44px}
+  .franja{height:6px}
+  main,.wrap{padding:16px 14px 48px}
+  .nav-tabs{display:none}
+  .nav-burger{display:inline-flex}
+  .nav-actual{display:block;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #navBar{top:6px;margin-bottom:14px}
+  .kpi{padding:16px 16px 14px 20px}
+  .kpi .v,.kpi .val{font-size:26px}
+}
+@media (prefers-reduced-motion:reduce){ .nav-tab,button.btn,.pys-btn,.busq-btn{transition:none} button.btn:hover,.pys-btn:hover,.busq-btn:hover{transform:none} }
+@media print{ #navBar,#navDrawer,#navVelo{display:none!important} }
+/* ===================================================================================================== */
+
+/* ===== Lanzador sobre el sistema visual compartido (cambio 47): mismo encabezado, vidrio, ondas, cápsulas e íconos ===== */
 *{box-sizing:border-box}
 html,body{margin:0}
-body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--fondo);color:var(--black);min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
-.barra{height:8px;background:linear-gradient(90deg,var(--blue),var(--teal))}
-header{background:var(--blanco);padding:calc(18px + env(safe-area-inset-top)) 20px 18px;border-bottom:1px solid var(--linea);display:flex;align-items:center;justify-content:center}
-header img{height:64px;width:auto;display:block}
-main{max-width:560px;margin:0 auto;padding:22px 16px 28px}
-h1{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--navy);font-weight:800;margin:6px 4px 4px}
-.sub{font-size:14.5px;color:var(--gris);margin:0 4px 18px;line-height:1.5}
-.lista{display:grid;gap:12px}
-a.card,div.card{display:flex;align-items:center;gap:14px;background:var(--blanco);border:1px solid var(--linea);border-radius:14px;padding:16px;text-decoration:none;color:inherit;min-height:84px;transition:transform .08s,box-shadow .15s}
-a.card:active{transform:scale(.985)}
-a.card:hover{box-shadow:0 4px 14px rgba(19,15,45,.08)}
-a.card:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
-.ico{flex:none;width:52px;height:52px;border-radius:12px;background:#E9F6FC;display:grid;place-items:center}
-.ico svg{width:28px;height:28px;stroke:var(--blue);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.txt{flex:1;min-width:0}
-.txt b{display:block;font-size:17px;font-weight:800}
-.txt span{display:block;font-size:13.5px;color:var(--gris);margin-top:2px;line-height:1.4}
-.ir{flex:none;font-size:13px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:4px}
-.ir svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-div.card{opacity:.6;background:#F9FBFD;border-style:dashed}
-div.card .ico{background:#EEF1F4}div.card .ico svg{stroke:var(--gris)}
-button.card{width:100%;font:inherit;text-align:left;cursor:pointer;opacity:.6;background:#F9FBFD;border:1px dashed var(--linea);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;min-height:84px;color:inherit}
-button.card .ico{background:#EEF1F4}button.card .ico svg{stroke:var(--gris)}
-button.card:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
-.pronto{flex:none;font-size:12px;font-weight:700;color:var(--gris);background:#EEF1F4;border-radius:999px;padding:4px 10px}
-.nota{margin:22px 4px 0;padding:12px 14px;background:#E9F6FC;border-radius:12px;font-size:13px;color:var(--navy);line-height:1.5}
-footer{text-align:center;font-size:12px;color:var(--gris);padding:10px 20px 24px}
-.avisos{margin:0 0 20px}
-.avisos-cab{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 4px 10px}
-.avisos-cab h2{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--navy);font-weight:800;margin:0}
-.leidos{border:0;background:none;color:var(--blue);font:700 13px 'Plus Jakarta Sans',system-ui,sans-serif;padding:6px 4px;cursor:pointer}
-.leidos:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
-.aviso{background:var(--blanco);border:1px solid var(--linea);border-left:4px solid var(--blue);border-radius:12px;padding:14px 16px;margin-bottom:10px}
-.aviso.importante{border-left-color:#EFC40F;background:#FFFCF0}
+body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:var(--sv-negro);min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
 .aviso-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-.aviso b{font-size:15.5px;font-weight:800;line-height:1.35}
-.aviso p{margin:6px 0 0;font-size:14px;color:var(--gris);line-height:1.5}
-.aviso .fecha{display:block;margin-top:8px;font-size:12px;color:var(--gris)}
-.aviso a{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:13.5px;font-weight:700;color:var(--blue);text-decoration:none}
-.aviso a svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.quitar{border:0;background:none;color:var(--gris);font:600 12.5px 'Plus Jakarta Sans',system-ui,sans-serif;padding:6px 0 0;margin-left:14px;cursor:pointer;text-decoration:underline}
-.quitar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:4px}
-.nuevo{flex:none;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--blanco);background:var(--blue);border-radius:999px;padding:3px 9px}
-.aviso.importante .nuevo{background:#8A6F00}
-.notif{display:flex;align-items:center;gap:12px;background:var(--blanco);border:1px solid var(--linea);border-radius:14px;padding:14px 16px;margin:18px 0 0}
-.notif[hidden],.avisos[hidden]{display:none}
-.notif .ico{width:44px;height:44px}
+.notif .txt span{font-size:13px}
+main{max-width:600px;padding:26px 16px 34px}
+header{padding:calc(22px + env(safe-area-inset-top)) 22px 22px;min-height:0}
+.header-inner{gap:18px}
+header h1{font-size:26px;letter-spacing:-.4px}
+header .sub{margin-top:8px}
+.logo{height:64px}
+#ripple-header{position:absolute;left:-250px;top:-160px;width:500px;height:500px;pointer-events:none;opacity:.42}
+.header-inner,.header-txt{position:relative;z-index:2}
+.header-txt{flex:1;min-width:0}
+h2.titulo-sec{font-size:16px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--sv-negro);margin:4px 6px 12px}
+.lista{display:grid;gap:14px}
+/* Tarjetas de los procesos: vidrio grueso, como los widgets */
+a.card,button.card,div.card{display:flex;align-items:center;gap:14px;width:100%;min-height:86px;padding:16px;border-radius:24px;text-decoration:none;color:inherit;font:inherit;text-align:left;cursor:pointer;
+  background:radial-gradient(180px 80px at var(--mx) var(--my),rgba(255,255,255,.5),transparent 70%),linear-gradient(180deg,rgba(255,255,255,.66),rgba(255,255,255,.46));border:1px solid rgba(255,255,255,.85);opacity:1;
+  box-shadow:inset 0 1.5px 1px #fff,inset 0 -1px 1px rgba(255,255,255,.6),inset 0 0 16px rgba(255,255,255,.45),var(--lg-sombra);
+  -webkit-backdrop-filter:blur(8px) saturate(180%);backdrop-filter:blur(8px) saturate(180%);transition:transform .38s var(--lg-resorte),box-shadow .2s ease}
+.lg-refracta a.card,.lg-refracta button.card{backdrop-filter:url(#jci-lupa) blur(6px) saturate(180%)}
+a.card:hover{transform:translateY(-2px);box-shadow:inset 0 1.5px 1px #fff,inset 0 0 16px rgba(255,255,255,.45),var(--sv-e2)}
+a.card:active,button.card:active{transform:scale(1.03);transition:transform .12s ease-out}
+a.card:focus-visible,button.card:focus-visible{outline:3px solid var(--sv-azul-50);outline-offset:3px}
+button.card[data-bloq],div.card{background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,.22))}
+div.card{cursor:default;border-style:solid}
+/* Íconos: botón de vidrio azul (activo) o transparente (bloqueado / próximamente), como el centro de control */
+.ico{flex:none;width:54px;height:54px;border-radius:18px;display:grid;place-items:center;
+  background:radial-gradient(40px 20px at 50% 0%,rgba(255,255,255,.55),transparent 75%),linear-gradient(180deg,rgba(0,151,215,.95),rgba(0,137,196,.82));
+  border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.8),inset 0 -1px 1px rgba(255,255,255,.3),0 6px 16px rgba(0,151,215,.32)}
+.ico svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+button.card[data-bloq] .ico,div.card .ico{background:radial-gradient(40px 20px at 50% 0%,rgba(255,255,255,.7),transparent 75%),linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.3));box-shadow:inset 0 1.5px 1px #fff,0 4px 12px rgba(19,15,45,.10)}
+button.card[data-bloq] .ico svg,div.card .ico svg{stroke:var(--sv-negro-75)}
+.txt{flex:1;min-width:0}
+.txt b{display:block;font-size:17px;font-weight:600}
+.txt span{display:block;font-size:13.5px;color:var(--sv-negro-75);margin-top:2px;line-height:1.4}
+.ir{flex:none;font-size:13px;font-weight:600;color:var(--sv-navy);display:flex;align-items:center;gap:4px;padding:8px 12px;border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.45));border:1px solid rgba(255,255,255,.85);box-shadow:inset 0 1px 1px #fff,0 2px 6px rgba(19,15,45,.08)}
+.ir svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.pronto{flex:none;font-size:11.5px;font-weight:600;color:var(--sv-negro-75);border-radius:999px;padding:5px 11px;
+  background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,.5));border:1px solid rgba(255,255,255,.85);box-shadow:inset 0 1px 1px #fff}
+/* Avisos y panel de notificaciones: paneles de vidrio con barra de color, como los indicadores */
+.avisos-cab{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 6px 12px}
+.avisos-cab h2{font-size:16px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--sv-negro);margin:0}
+.leidos{border:0;background:none;color:var(--sv-azul);font:600 13px 'Plus Jakarta Sans',system-ui,sans-serif;padding:6px 4px;cursor:pointer}
+.aviso,.notif,.nota,.err{position:relative;overflow:hidden;border-radius:22px;padding:15px 16px 15px 20px;margin-bottom:12px;
+  background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,.6));border:1px solid rgba(255,255,255,.85);
+  box-shadow:inset 0 1.5px 1px #fff,inset 0 0 14px rgba(255,255,255,.45),var(--lg-sombra);-webkit-backdrop-filter:blur(8px) saturate(170%);backdrop-filter:blur(8px) saturate(170%)}
+.aviso::before,.nota::before,.err::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--sv-azul)}
+.aviso.importante::before,.err::before{background:var(--sv-amarillo)}
+.aviso.importante{background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.62))}
+.aviso b{font-size:15.5px;font-weight:600;line-height:1.35}
+.aviso p{margin:6px 0 0;font-size:14px;color:var(--sv-negro-75);line-height:1.5}
+.aviso .fecha{display:block;margin-top:8px;font-size:12px;color:var(--sv-negro-75)}
+.aviso a{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:13.5px;font-weight:600;color:var(--sv-azul);text-decoration:none}
+.nuevo{flex:none;font-size:11px;font-weight:700;color:#fff;background:var(--sv-azul);border-radius:999px;padding:3px 9px;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 2px 6px rgba(0,151,215,.35)}
+.aviso.importante .nuevo{background:var(--sv-amarillo);color:var(--sv-negro)}
+.notif{display:flex;align-items:center;gap:12px;padding:14px 16px;margin:18px 0 0}
+.notif .ico{width:44px;height:44px;border-radius:15px}
 .notif .txt b{font-size:15px}
-.notif button{flex:none;border:0;border-radius:10px;background:var(--blue);color:#fff;font:700 13.5px 'Plus Jakarta Sans',system-ui,sans-serif;padding:10px 14px;cursor:pointer}
-.notif button:disabled{background:#EEF1F4;color:var(--gris);cursor:default}
-.notif button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
-.err{padding:14px;background:#FFF7D6;border-radius:12px;color:#8A6F00;font-size:14px}
+.notif button{flex:none;border:0;border-radius:999px;color:#fff;font:600 13.5px 'Plus Jakarta Sans',system-ui,sans-serif;padding:10px 16px;cursor:pointer;
+  background:radial-gradient(100px 40px at 50% 0%,rgba(255,255,255,.4),transparent 75%),linear-gradient(180deg,#0097D7,#0089C4);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 4px 12px rgba(0,151,215,.25);transition:transform .38s var(--lg-resorte)}
+.notif button:active{transform:scale(1.07)}
+.notif button:disabled{background:rgba(255,255,255,.6);color:var(--sv-negro-75);box-shadow:inset 0 1px 1px #fff;cursor:default}
+.nota{font-size:13px;color:var(--sv-navy);line-height:1.5;margin-top:22px}
+.err{color:var(--sv-negro);font-size:14px}
+.quitar{border:0;background:none;color:var(--sv-negro-75);font:600 12.5px 'Plus Jakarta Sans',system-ui,sans-serif;padding:6px 0 0;margin-left:14px;cursor:pointer;text-decoration:underline}
+footer{text-align:center;font-size:12px;color:var(--sv-negro-75);padding:10px 20px 24px}
+/* Ventana de la clave en vidrio (reemplaza la ventana gris del navegador) */
+.modal-v{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.modal-c{max-width:420px;width:100%;padding:22px}
+.modal-c h2{margin:0 0 8px;font-size:18px;font-weight:600} .modal-c p{margin:0 0 12px;color:var(--sv-negro-75);font-size:14px;line-height:1.5}
+.modal-c input{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:12px 14px;border-radius:14px;border:1px solid rgba(31,71,137,.25);background:rgba(255,255,255,.75);letter-spacing:.06em;text-transform:uppercase}
+.modal-c .mb{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.modal-c .msg-err{color:var(--sv-navy);font-size:13px;font-weight:600;min-height:18px;margin-top:8px}
+@media(max-width:760px){ header{padding:calc(16px + env(safe-area-inset-top)) 16px 16px} header h1{font-size:20px} .logo{height:44px} #ripple-header{opacity:.12;left:-210px;top:-150px} }
+
 </style>
 </head>
 <body>
-<div class="barra"></div>
-<header><img src="logo.png" alt="JCI Bogotá"></header>
+<header>
+  <svg id="ripple-header" viewBox="0 0 500 500" fill="none" aria-hidden="true"><circle cx="250" cy="250" r="44" stroke="#0097D7" stroke-width="14" stroke-dasharray="59.2 11.2 83.1 9.7 74.7 15.4 39.8 18.1" transform="rotate(19 250 250)"/><circle cx="250" cy="250" r="68" stroke="#1F4789" stroke-width="14" stroke-dasharray="64.6 25.3 82.1 29.3 61.6 29.7 161.9 31.7" transform="rotate(298 250 250)"/><circle cx="250" cy="250" r="92" stroke="#57BCBC" stroke-width="14" stroke-dasharray="219.1 40.7 134.9 56.8 81.4 52.1" transform="rotate(148 250 250)"/><circle cx="250" cy="250" r="116" stroke="#0097D7" stroke-width="14" stroke-dasharray="174.4 49.5 203.7 50.4 225.1 27.1" transform="rotate(292 250 250)"/><circle cx="250" cy="250" r="140" stroke="#1F4789" stroke-width="14" stroke-dasharray="183.1 49.3 168.3 30.3 88.9 39.1 189.9 52.7 130.3 62.4" transform="rotate(232 250 250)"/><circle cx="250" cy="250" r="164" stroke="#0097D7" stroke-width="14" stroke-dasharray="161.7 48.8 127.0 87.2 108.3 52.6 187.1 55.7 178.3 74.8" transform="rotate(37 250 250)"/><circle cx="250" cy="250" r="188" stroke="#57BCBC" stroke-width="14" stroke-dasharray="132.1 70.0 271.8 48.0 213.2 38.7 252.3 98.7 231.5 107.8" transform="rotate(160 250 250)"/><circle cx="250" cy="250" r="212" stroke="#1F4789" stroke-width="14" stroke-dasharray="203.7 72.6 242.3 114.3 136.8 48.7 186.4 105.0 135.9 108.1" transform="rotate(158 250 250)"/><circle cx="250" cy="250" r="236" stroke="#0097D7" stroke-width="14" stroke-dasharray="311.0 147.6 358.9 74.0 239.3 113.9 139.6 92.4 179.6 56.6" transform="rotate(30 250 250)"/></svg>
+  <div class="header-inner">
+    <div class="header-txt"><h1>Procesos JCI Bogotá</h1><div class="sub">Toca el proceso que necesitas. Cada tablero te pide tu cuenta de Google y te muestra solo lo que tu rol permite.</div></div>
+    <img class="logo" src="logo-blanco.webp" alt="JCI Bogotá">
+  </div>
+</header>
+<div class="franja"></div>
 <main>
   <section class="avisos" id="avisos" hidden aria-label="Avisos">
     <div class="avisos-cab"><h2>Avisos</h2><button class="leidos" id="leidos" type="button" hidden>Marcar como leídos</button></div>
     <div id="lista-avisos" aria-live="polite"></div>
   </section>
-  <h1>Tus procesos</h1>
-  <p class="sub">Toca el proceso que necesitas. Cada tablero te pide entrar con tu cuenta de Google y te muestra solo lo que tu rol permite.</p>
+  <h2 class="titulo-sec">Tus procesos</h2>
   <div class="lista" id="lista" aria-live="polite"></div>
   <div class="notif" id="notif" hidden>
     <span class="ico"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 004 0"/></svg></span>
@@ -104,15 +391,29 @@ function urlSegura(u){try{var x=new URL(u);return (x.protocol==='https:')?x.href
 var APPS=[];
 function habilitada(id){try{return localStorage.getItem('jci-app-'+id)==='1';}catch(e){return false;}}
 function sha256(t){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return ('0'+x.toString(16)).slice(-2);}).join('');});}
+/* Clave del botón restringido en una ventana de vidrio (antes: ventana gris del navegador). */
+function pedirClave(app){
+  var antes=document.activeElement, v=document.createElement('div'); v.className='modal-v';
+  v.innerHTML='<div class="modal-c" role="dialog" aria-modal="true" aria-labelledby="clave-t"><h2 id="clave-t">'+esc(app.restringida.etiqueta||'Restringido')+'</h2>'+
+    '<p>Si tienes la clave, escríbela para habilitar este proceso en este celular.</p><input id="clave-i" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Clave">'+
+    '<div class="msg-err" id="clave-e" aria-live="polite"></div><div class="mb"><button type="button" class="btn sec" data-r="0">Cancelar</button><button type="button" class="btn" data-r="1">Habilitar</button></div></div>';
+  document.body.appendChild(v);
+  var i=v.querySelector('#clave-i'), e=v.querySelector('#clave-e');
+  var cerrar=function(){ document.removeEventListener('keydown',tecla,true); v.remove(); if(antes&&antes.focus)try{antes.focus();}catch(x){} };
+  var probar=function(){ var k=i.value; if(!k.trim()){ e.textContent='Escribe la clave.'; i.focus(); return; }
+    sha256('jci-bogota|'+k.replace(/\s+/g,'').toUpperCase()).then(function(h){
+      if(h===app.restringida.claveSha256){try{localStorage.setItem('jci-app-'+app.id,'1');}catch(x){} cerrar(); pintarApps();}
+      else { e.textContent='Clave incorrecta.'; i.select(); }
+    }); };
+  var tecla=function(ev){ if(ev.key==='Escape'){ev.preventDefault();cerrar();} if(ev.key==='Enter'){ev.preventDefault();probar();} };
+  document.addEventListener('keydown',tecla,true);
+  v.addEventListener('click',function(ev){ if(ev.target===v) cerrar(); var b=ev.target.closest('[data-r]'); if(b){ if(b.getAttribute('data-r')==='1') probar(); else cerrar(); } });
+  i.focus();
+}
 document.addEventListener('click',function(ev){
   var b=ev.target.closest&&ev.target.closest('button.card[data-bloq]');if(!b)return;
   var app=APPS.filter(function(x){return x.id===b.getAttribute('data-bloq');})[0];if(!app)return;
-  var k=window.prompt((app.restringida.etiqueta||'Restringido')+'. Si tienes la clave, escríbela para habilitarlo en este celular:');
-  if(!k)return;
-  sha256('jci-bogota|'+k.replace(/\s+/g,'').toUpperCase()).then(function(h){
-    if(h===app.restringida.claveSha256){try{localStorage.setItem('jci-app-'+app.id,'1');}catch(e){}pintarApps();}
-    else window.alert('Clave incorrecta.');
-  });
+  pedirClave(app);
 });
 function pintarApps(){var l=document.getElementById('lista');l.innerHTML='';APPS.forEach(pintarApp);}
 function pintarApp(a){
@@ -238,6 +539,56 @@ fetch('notificaciones.json',{cache:'no-cache'}).then(function(r){return r.json()
   if(c&&c.activas&&f.apiKey&&f.projectId&&f.messagingSenderId&&f.appId&&c.vapidKey){NOTIF_CFG=c;iniciarNotif();}
 }).catch(function(){/* sin notificaciones: el lanzador funciona igual */});
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+<script>
+/* ===== Vidrio líquido (cambios 45, 46 y 47) · IDÉNTICO en Tesorería, Contraloría y el lanzador ===== */
+(function vidrioLiquido_(){
+  var raiz = document.documentElement;
+  /* Filtro de refracción: deforma levemente lo que pasa detrás del vidrio. Solo donde el navegador lo soporta. */
+  if (!document.getElementById('jci-liquido-svg')) document.body.insertAdjacentHTML('beforeend',
+    '<svg id="jci-liquido-svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">' +
+    /* Lupa en el canto: el mapa deja quieto el centro (128) y desplaza el borde, como el grosor de un vidrio */
+    '<filter id="jci-lupa" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
+    '<feImage href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22100%22%20height%3D%22100%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22rgb%280%2C0%2C0%29%22/%3E%3Cstop%20offset%3D%220.07%22%20stop-color%3D%22rgb%28128%2C0%2C0%29%22/%3E%3Cstop%20offset%3D%220.93%22%20stop-color%3D%22rgb%28128%2C0%2C0%29%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22rgb%28255%2C0%2C0%29%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url%28%23g%29%22/%3E%3C/svg%3E" preserveAspectRatio="none" result="mx"/>' +
+    '<feImage href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22100%22%20height%3D%22100%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22rgb%280%2C0%2C0%29%22/%3E%3Cstop%20offset%3D%220.3%22%20stop-color%3D%22rgb%280%2C128%2C0%29%22/%3E%3Cstop%20offset%3D%220.7%22%20stop-color%3D%22rgb%280%2C128%2C0%29%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22rgb%280%2C255%2C0%29%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url%28%23g%29%22/%3E%3C/svg%3E" preserveAspectRatio="none" result="my"/>' +
+    '<feComposite in="mx" in2="my" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="mapa"/>' +
+    '<feDisplacementMap in="SourceGraphic" in2="mapa" scale="34" xChannelSelector="R" yChannelSelector="G"/></filter>' +
+    /* Refracción suave anterior (se conserva para .lg) */
+    '<filter id="jci-liquido" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">' +
+    '<feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="7" result="ruido"/>' +
+    '<feGaussianBlur in="ruido" stdDeviation="2" result="suave"/>' +
+    '<feDisplacementMap in="SourceGraphic" in2="suave" scale="22" xChannelSelector="R" yChannelSelector="G"/></filter></svg>');
+  var quieto = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var esChromium = !!window.chrome && /Chrome|Edg/.test(navigator.userAgent) && !/OPR|Opera/.test(navigator.userAgent);
+  var fino = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (esChromium && fino && !quieto) raiz.classList.add('lg-refracta');   // en celulares se deja el desenfoque fino: la refracción es costosa
+  /* Indicador deslizante de la pestaña activa */
+  function ubicar(){
+    var tabs = document.querySelector('#navBar .nav-tabs'); if (!tabs) return;
+    var ind = tabs.querySelector('.lg-indicador');
+    if (!ind){ ind = document.createElement('span'); ind.className = 'lg-indicador'; ind.setAttribute('aria-hidden', 'true'); tabs.insertBefore(ind, tabs.firstChild); }
+    var a = tabs.querySelector('.nav-tab.activa');
+    if (!a){ ind.style.width = '0'; return; }
+    var primera = !ind.style.width || ind.style.width === '0px';
+    if (primera) ind.style.transition = 'none';
+    var cambia = !primera && ind.dataset.x !== String(a.offsetLeft); ind.dataset.x = String(a.offsetLeft);
+    ind.style.transform = 'translateX(' + a.offsetLeft + 'px)'; ind.style.width = a.offsetWidth + 'px';
+    if (cambia && !quieto){ ind.classList.remove('estira'); void ind.offsetWidth; ind.classList.add('estira'); }
+    if (primera){ void ind.offsetWidth; ind.style.transition = ''; }
+  }
+  var pend = false, programar = function(){ if (pend) return; pend = true; requestAnimationFrame(function(){ pend = false; ubicar(); }); };
+  new MutationObserver(function(ms){ for (var i = 0; i < ms.length; i++){ var t = ms[i].target; if (t.id === 'navBar' || (t.closest && t.closest('#navBar')) || (ms[i].addedNodes[0] && ms[i].addedNodes[0].id === 'navBar')){ programar(); return; } } })
+    .observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+  window.addEventListener('resize', programar);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(programar);
+  programar();
+  /* Reflejo que sigue al puntero sobre el vidrio */
+  if (!quieto && fino) document.addEventListener('pointermove', function(e){
+    var el = e.target.closest && e.target.closest('#navBar,.toast,button.btn,.pys-btn,.busq-btn,.busq-limpiar,.subnav button,.subnav2 button,a.card,button.card');
+    if (!el) return; var r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', Math.round(e.clientX - r.left) + 'px'); el.style.setProperty('--my', Math.round(e.clientY - r.top) + 'px');
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>
