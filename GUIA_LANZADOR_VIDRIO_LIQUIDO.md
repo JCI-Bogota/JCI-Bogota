@@ -25,3 +25,9 @@ No hay cambios en las funciones: avisos, bandeja, notificaciones y clave funcion
   Sin errores de JavaScript.
 - ✅ El bloque visual y el script son idénticos a los de los tableros.
 - ❌ No probado en un iPhone ni con la app instalada.
+
+## Corrección (26-nov-2026): el panel de notificaciones no se ocultaba
+- **Qué pasaba:** con las notificaciones ya activas, el panel «Notificaciones · Activar» seguía visible y el botón no hacía nada.
+- **Causa:** al cambiar los estilos se perdió la regla que oculta el panel cuando tiene el atributo `hidden`, y el nuevo `display:flex` del panel le ganaba. El código sí detectaba que las notificaciones estaban activas.
+- **Solución:** la regla general `[hidden]{display:none!important}` y `sw.js` en v9.
+- **Probado:** con `hidden` el panel queda oculto, y sin él se ve.

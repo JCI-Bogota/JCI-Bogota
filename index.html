@@ -272,6 +272,8 @@ button.btn:not(:disabled):active,.pys-btn:not(:disabled):active,.busq-btn:not(:d
 /* ===== Lanzador sobre el sistema visual compartido (cambio 47): mismo encabezado, vidrio, ondas, cápsulas e íconos ===== */
 *{box-sizing:border-box}
 html,body{margin:0}
+/* El atributo hidden siempre gana: el panel de notificaciones, los avisos y «Marcar como leídos» se ocultan con él */
+[hidden]{display:none!important}
 body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:var(--sv-negro);min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
 .aviso-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .notif .txt span{font-size:13px}
