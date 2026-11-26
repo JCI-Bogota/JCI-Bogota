@@ -296,6 +296,21 @@ button.btn.dark{background:var(--tv-brillo),var(--tv-navy);color:#fff;text-shado
 .lg-tactil .kpi{-webkit-backdrop-filter:blur(6px) saturate(170%);backdrop-filter:blur(6px) saturate(170%)}
 .lg-tactil #navBar,.lg-tactil .toast,.lg-tactil button.btn.sec,.lg-tactil .busq-limpiar{border-color:rgba(255,255,255,.8)}
 @media (prefers-reduced-transparency:reduce){ .kpi{background:#fff} }
+/* ---------- «Menú» del celular como lente de vidrio (cambio 50) ----------
+   El botón «Menú» usa la misma lente clara de la pestaña elegida en el computador: vidrio transparente,
+   canto con el azul, el teal y el amarillo de la marca, y texto e ícono en navy. */
+#navBar .nav-burger{color:var(--sv-navy);font-weight:700;
+  background:radial-gradient(120px 26px at 50% 0%,rgba(255,255,255,.75),transparent 75%),
+    radial-gradient(140px 60px at var(--mx) var(--my),rgba(255,255,255,.45),transparent 70%),
+    linear-gradient(180deg,rgba(255,255,255,.30),rgba(191,229,245,.18));
+  border:1px solid rgba(255,255,255,.9);
+  box-shadow:inset 0 1.5px 1px #fff,inset 0 -1.5px 1px rgba(255,255,255,.7),
+    inset 2.5px 0 3px rgba(0,151,215,.55),inset -2.5px 0 3px rgba(87,188,188,.6),inset 0 -3px 5px rgba(239,196,15,.28),
+    0 8px 22px rgba(0,151,215,.22),0 2px 6px rgba(19,15,45,.10);
+  -webkit-backdrop-filter:saturate(170%) brightness(1.04);backdrop-filter:saturate(170%) brightness(1.04)}
+#navBar .nav-burger svg{stroke:var(--sv-navy)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){ #navBar .nav-burger{background:#fff} }
+@media (prefers-reduced-transparency:reduce){ #navBar .nav-burger{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none} }
 /* ---------- Celular ---------- */
 @media(max-width:760px){
   header,.header{padding:14px 14px 12px;min-height:0;align-items:flex-start}
@@ -423,7 +438,7 @@ footer{text-align:center;font-size:12px;color:var(--sv-negro-75);padding:10px 20
   </div>
   <div class="nota">Entra con tu cuenta <b>@jcibogota.org</b>. Si el celular tiene varias cuentas de Google, elige esa.</div>
 </main>
-<footer>JCI Bogotá · Cámara Junior de Bogotá<br><span style="opacity:.7">Versión del 26-nov-2026 · v13</span></footer>
+<footer>JCI Bogotá · Cámara Junior de Bogotá<br><span style="opacity:.7">Versión del 26-nov-2026 · v14</span></footer>
 <script>
 var ICONOS = {
   moneda: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.2c-.5-.8-1.4-1.2-2.5-1.2-1.4 0-2.4.7-2.4 1.8 0 2.7 5 1.3 5 4 0 1.1-1.1 1.9-2.6 1.9-1.2 0-2.2-.5-2.7-1.4M12 6.5V8m0 8v1.5"/>',
