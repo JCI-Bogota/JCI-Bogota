@@ -8,6 +8,7 @@ Va con el cambio 48 de Contraloría y el cambio «Colores tenues» de Tesorería
 - **Etiqueta «Nuevo»:** tinte azul; en los avisos importantes, tinte amarillo con texto negro.
 - **Barras de los avisos** (aviso, nota y error): 4 px, redondeadas y desvanecidas.
 - Versión **v11** en `sw.js` y en el pie de la página, para que el celular tome la página nueva.
+- **v12:** el contador amarillo lleva una base blanca para que no se vea verde sobre fondos azules.
 
 ## Pasos
 1. Fusiona el PR. GitHub Pages publica en 1–2 minutos.
