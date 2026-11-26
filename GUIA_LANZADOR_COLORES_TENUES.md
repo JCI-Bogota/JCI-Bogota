@@ -17,3 +17,4 @@ Va con el cambio 48 de Contraloría y el cambio «Colores tenues» de Tesorería
 ## Pruebas
 - ✅ Capturas en Chromium (celular y computadora), incluida la ventana de la clave de Contraloría, sin errores en la consola.
 - ❌ No probado en el iPhone ni en el Android reales.
+- **v13:** vidrio líquido completo en el celular (cambio 49 de Contraloría). Refracción en Chrome de Android y reflejo que se mueve con la inclinación, el desplazamiento y el dedo, también sobre las tarjetas de los procesos.
