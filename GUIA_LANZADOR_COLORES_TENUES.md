@@ -19,3 +19,4 @@ Va con el cambio 48 de Contraloría y el cambio «Colores tenues» de Tesorería
 - ❌ No probado en el iPhone ni en el Android reales.
 - **v13:** vidrio líquido completo en el celular (cambio 49 de Contraloría). Refracción en Chrome de Android y reflejo que se mueve con la inclinación, el desplazamiento y el dedo, también sobre las tarjetas de los procesos.
 - **v14:** bloque visual compartido al día con el cambio 50 de Contraloría (el lanzador no tiene botón «Menú», así que no cambia a la vista).
+- **v15 · Auditoría SGSI:** política de seguridad de contenido (CSP). Solo carga recursos propios, las fuentes de Google y el SDK de Firebase. También política de referente y `SECURITY.md`. Después de publicar, activa las notificaciones una vez en un celular de prueba para confirmar que Firebase sigue respondiendo.
