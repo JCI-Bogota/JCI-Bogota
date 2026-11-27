@@ -1,5 +1,5 @@
 /* Guarda la carcasa para abrir sin conexión. NO guarda los tableros: esos siempre se abren en vivo. La página y los .json se piden primero a la red. */
-const V = 'jci-launcher-v14', ARCHIVOS = ['./', './index.html', './logo.png', './logo-blanco.webp', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
+const V = 'jci-launcher-v15', ARCHIVOS = ['./', './index.html', './logo.png', './logo-blanco.webp', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => Promise.all(ARCHIVOS.map(a => c.add(a).catch(() => {})))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== V && x !== 'jci-bandeja').map(x => caches.delete(x)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {

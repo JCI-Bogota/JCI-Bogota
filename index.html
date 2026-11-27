@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- SEGURIDAD (auditoría SGSI, OWASP ASVS V14.4): solo se cargan recursos propios, las fuentes de Google y el SDK de Firebase. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.googleapis.com https://www.gstatic.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>JCI Bogotá · Procesos</title>
 <meta name="theme-color" content="#0097D7">
 <link rel="manifest" href="manifest.webmanifest">
@@ -438,7 +441,7 @@ footer{text-align:center;font-size:12px;color:var(--sv-negro-75);padding:10px 20
   </div>
   <div class="nota">Entra con tu cuenta <b>@jcibogota.org</b>. Si el celular tiene varias cuentas de Google, elige esa.</div>
 </main>
-<footer>JCI Bogotá · Cámara Junior de Bogotá<br><span style="opacity:.7">Versión del 26-nov-2026 · v14</span></footer>
+<footer>JCI Bogotá · Cámara Junior de Bogotá<br><span style="opacity:.7">Versión del 26-nov-2026 · v15</span></footer>
 <script>
 var ICONOS = {
   moneda: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.2c-.5-.8-1.4-1.2-2.5-1.2-1.4 0-2.4.7-2.4 1.8 0 2.7 5 1.3 5 4 0 1.1-1.1 1.9-2.6 1.9-1.2 0-2.2-.5-2.7-1.4M12 6.5V8m0 8v1.5"/>',
