@@ -28,3 +28,4 @@ Va con el cambio 48 de Contraloría y el cambio «Colores tenues» de Tesorería
   - el botón de notificaciones muestra un indicador de carga;
   - rejilla bento cuando haya 4 o más procesos.
 - **v17 · Encabezado liviano (cambio 53):** en el computador, el título y el logo son más pequeños, igual que en los tableros. En el celular, el lanzador conserva su encabezado de bienvenida.
+- **v18 · Preguntas frecuentes plegadas (cambio 54):** quedan en un botón discreto al final que se abre al tocarlo.
