@@ -370,8 +370,7 @@ button.btn.dark{background:var(--tv-brillo),var(--tv-navy);color:#fff;text-shado
 .guia .puntos i{width:8px;height:8px;border-radius:50%;background:rgba(19,15,45,.18)}
 .guia .puntos i.on{background:var(--sv-azul);width:22px;border-radius:4px}
 .guia .paso-n{font-size:12px;font-weight:600;color:var(--sv-azul);margin:0 0 4px}
-/* Bento: el primer indicador ocupa dos columnas cuando hay 4 o más */
-@media (min-width:900px){ .kpis>.kpi:first-child:nth-last-child(n+4){grid-column:span 2} }
+/* Bento retirado (cambio 57): en la rejilla automática descuadraba la fila; todos los indicadores ocupan lo mismo */
 /* Animación por scroll en CSS (sin JavaScript) donde el navegador la soporta */
 @supports (animation-timeline:view()){
   @media (prefers-reduced-motion:no-preference){
@@ -623,7 +622,7 @@ footer{text-align:center;font-size:12px;color:var(--sv-negro-75);padding:10px 20
     <details><summary>¿Cómo sé que tengo la última versión?</summary><p>El pie de esta página muestra la versión. Si hubo un cambio reciente y no lo ves, cierra la app del todo y vuelve a abrirla.</p></details>
   </div></details>
 </main>
-<footer>JCI Bogotá · Cámara Junior de Bogotá<br><span style="opacity:.7">Versión del 28-nov-2026 · v19</span></footer>
+<footer>JCI Bogotá · Cámara Junior de Bogotá<br><span style="opacity:.7">Versión del 28-nov-2026 · v20</span></footer>
 <script>
 var ICONOS = {
   moneda: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.2c-.5-.8-1.4-1.2-2.5-1.2-1.4 0-2.4.7-2.4 1.8 0 2.7 5 1.3 5 4 0 1.1-1.1 1.9-2.6 1.9-1.2 0-2.2-.5-2.7-1.4M12 6.5V8m0 8v1.5"/>',
