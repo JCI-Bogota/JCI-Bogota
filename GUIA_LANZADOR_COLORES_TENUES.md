@@ -20,3 +20,10 @@ Va con el cambio 48 de Contraloría y el cambio «Colores tenues» de Tesorería
 - **v13:** vidrio líquido completo en el celular (cambio 49 de Contraloría). Refracción en Chrome de Android y reflejo que se mueve con la inclinación, el desplazamiento y el dedo, también sobre las tarjetas de los procesos.
 - **v14:** bloque visual compartido al día con el cambio 50 de Contraloría (el lanzador no tiene botón «Menú», así que no cambia a la vista).
 - **v15 · Auditoría SGSI:** política de seguridad de contenido (CSP). Solo carga recursos propios, las fuentes de Google y el SDK de Firebase. También política de referente y `SECURITY.md`. Después de publicar, activa las notificaciones una vez en un celular de prueba para confirmar que Firebase sigue respondiendo.
+- **v16 · Patrones de interfaz (cambio 52):**
+  - guía de 3 pasos la primera vez (instalar, notificaciones, abrir Tesorería);
+  - preguntas frecuentes en acordeón;
+  - deslizar un aviso lo marca como leído, con «Deshacer»;
+  - la ventana de la clave sale como hoja inferior en el celular;
+  - el botón de notificaciones muestra un indicador de carga;
+  - rejilla bento cuando haya 4 o más procesos.
