@@ -30,3 +30,4 @@ Va con el cambio 48 de Contraloría y el cambio «Colores tenues» de Tesorería
 - **v17 · Encabezado liviano (cambio 53):** en el computador, el título y el logo son más pequeños, igual que en los tableros. En el celular, el lanzador conserva su encabezado de bienvenida.
 - **v18 · Preguntas frecuentes plegadas (cambio 54):** quedan en un botón discreto al final que se abre al tocarlo.
 - **v19:** bloque compartido al día con el cambio 55 (botón «+» con menú). El lanzador no tiene botón flotante, así que no cambia a la vista.
+- **v20:** bloque compartido al día con el cambio 57 (se retira el bento de indicadores). Sin cambio visible en el lanzador.
