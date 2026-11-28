@@ -408,6 +408,7 @@ button.btn.dark{background:var(--tv-brillo),var(--tv-navy);color:#fff;text-shado
   .tabbar .badge{position:absolute;top:3px;left:calc(50% + 6px);margin:0;min-width:17px;height:17px;padding:0 4px;font-size:10px}
   body.con-tabbar{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
   body.con-tabbar .nav-flotante{display:none!important}
+  body.con-tabbar #navBar{display:none!important}   /* cambio 53: la tab bar ya muestra la sección y el menú */
   body.con-tabbar .toasts{bottom:calc(92px + env(safe-area-inset-bottom))}
   body.con-tabbar .accion-fija{bottom:calc(88px + env(safe-area-inset-bottom))}
   /* FAB */
@@ -438,6 +439,20 @@ body.presentacion .tabbar,body.presentacion .fab,body.presentacion .migas,body.p
 html:has(body.presentacion){scroll-snap-type:y proximity}
 body.presentacion .acto,body.presentacion main>section:not(.hidden)>.card{scroll-snap-align:start;scroll-margin-top:16px}
 @media print{ .tabbar,.fab,.migas,.doner-btn,.kebab-btn{display:none!important} }
+/* ---------- Encabezado más liviano (cambio 53) ----------
+   Computador: título y logo más contenidos. Celular (solo tableros): una franja delgada con el logo y la última actualización;
+   sin título (ya se eligió el tablero en el lanzador), sin actualizar ni pantalla completa (en el celular se recarga deslizando hacia abajo). */
+header,.header{padding:28px 40px;min-height:148px}
+header h1,.header .titulo{font-size:30px;letter-spacing:-.5px}
+.logo{height:88px}
+@media (max-width:640px){
+  :is(header,.header):has(.btn-rec,.tit-icono){padding:10px 16px;min-height:0;align-items:center}
+  :is(header,.header):has(.btn-rec,.tit-icono) .header-inner{align-items:center;gap:14px}
+  :is(header,.header):has(.btn-rec,.tit-icono) :is(h1,.pdf-box){display:none!important}
+  :is(header,.header):has(.btn-rec,.tit-icono) :is(.sub,.subtitulo){margin-top:0;font-size:11.5px;line-height:1.35;opacity:.82;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  :is(header,.header):has(.btn-rec,.tit-icono) .logo{height:30px;flex:none}
+}
 /* ---------- Celular ---------- */
 @media(max-width:760px){
   header,.header{padding:14px 14px 12px;min-height:0;align-items:flex-start}
@@ -584,7 +599,7 @@ footer{text-align:center;font-size:12px;color:var(--sv-negro-75);padding:10px 20
     <details><summary>¿Cómo sé que tengo la última versión?</summary><p>El pie de esta página muestra la versión. Si hubo un cambio reciente y no lo ves, cierra la app del todo y vuelve a abrirla.</p></details>
   </section>
 </main>
-<footer>JCI Bogotá · Cámara Junior de Bogotá<br><span style="opacity:.7">Versión del 28-nov-2026 · v16</span></footer>
+<footer>JCI Bogotá · Cámara Junior de Bogotá<br><span style="opacity:.7">Versión del 28-nov-2026 · v17</span></footer>
 <script>
 var ICONOS = {
   moneda: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.2c-.5-.8-1.4-1.2-2.5-1.2-1.4 0-2.4.7-2.4 1.8 0 2.7 5 1.3 5 4 0 1.1-1.1 1.9-2.6 1.9-1.2 0-2.2-.5-2.7-1.4M12 6.5V8m0 8v1.5"/>',
@@ -884,7 +899,7 @@ var PT = (function patrones_(){
   var firma = '';
   function tabbar(){
     var bar = document.getElementById('navBar'), tb = document.getElementById('ptTabbar');
-    var tabs = bar && bar.offsetParent !== null ? [].slice.call(bar.querySelectorAll('.nav-tab')) : [];
+    var tabs = bar && bar.style.display !== 'none' ? [].slice.call(bar.querySelectorAll('.nav-tab')) : [];
     if (tabs.length < 2 || document.body.classList.contains('presentacion')){ if (tb) tb.hidden = true; document.body.classList.remove('con-tabbar'); firma = ''; return; }
     var vis = tabs.slice(0, 3), activa = tabs.filter(function(t){ return t.classList.contains('activa'); })[0];
     var f = tabs.map(function(t){ return t.textContent + (t === activa ? '*' : ''); }).join('|');
