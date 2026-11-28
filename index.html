@@ -453,6 +453,21 @@ header h1,.header .titulo{font-size:30px;letter-spacing:-.5px}
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   :is(header,.header):has(.btn-rec,.tit-icono) .logo{height:30px;flex:none}
 }
+/* ---------- Preguntas frecuentes plegadas (cambio 54): un botón discreto que se abre al tocarlo ---------- */
+.faq-caja{margin:18px 0 6px}
+.faq-caja>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 14px 0 8px;border-radius:999px;
+  font:600 13px 'Plus Jakarta Sans',system-ui,sans-serif;color:var(--sv-negro-75,#4E4B62);background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.75);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.faq-caja>summary::-webkit-details-marker{display:none}
+.faq-caja>summary::before{content:'?';width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--sv-navy);
+  background:var(--pt-lente);box-shadow:var(--pt-canto-lente)}
+.faq-caja>summary::after{content:'';width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);margin-left:2px;transition:transform .2s ease}
+.faq-caja[open]>summary::after{transform:rotate(45deg)}
+.faq-caja>summary:hover{color:var(--sv-navy)}
+.faq-caja .faq{margin-top:10px}
+.faq-caja .faq details{background:rgba(255,255,255,.5)}
+.faq-caja .faq summary{min-height:44px;font-size:14px}
+@media print{ .faq-caja{display:none} }
 /* ---------- Celular ---------- */
 @media(max-width:760px){
   header,.header{padding:14px 14px 12px;min-height:0;align-items:flex-start}
@@ -591,15 +606,15 @@ footer{text-align:center;font-size:12px;color:var(--sv-negro-75);padding:10px 20
     <button type="button" id="notif-btn">Activar</button>
   </div>
   <div class="nota">Entra con tu cuenta <b>@jcibogota.org</b>. Si el celular tiene varias cuentas de Google, elige esa.</div>
-  <section class="faq" aria-labelledby="faq-t"><h2 id="faq-t">Preguntas frecuentes</h2>
+  <details class="faq-caja"><summary>Preguntas frecuentes</summary><div class="faq">
     <details><summary>¿Cómo instalo la app en el celular?</summary><p>En Android, abre el menú ⋮ de Chrome y elige «Instalar app» o «Agregar a la pantalla principal». En iPhone, toca Compartir y luego «Agregar a inicio». Después ábrela siempre desde el ícono.</p></details>
     <details><summary>¿Por qué no me llegan las notificaciones?</summary><p>Actívalas con el botón «Activar» y acepta el permiso. Luego abre Tesorería una vez desde aquí, para que el tablero reconozca tu celular. Si las bloqueaste, actívalas en los ajustes del navegador para esta app.</p></details>
     <details><summary>¿Con qué cuenta entro a los tableros?</summary><p>Con tu cuenta @jcibogota.org. Si el celular tiene varias cuentas de Google, elige esa. Cada tablero te muestra solo lo que tu rol permite.</p></details>
     <details><summary>¿Por qué Contraloría aparece bloqueada?</summary><p>Es el tablero de Contraloría. Se habilita en este celular con su clave y, aun así, pide tu cuenta y valida tu rol antes de mostrar información.</p></details>
     <details><summary>¿Cómo sé que tengo la última versión?</summary><p>El pie de esta página muestra la versión. Si hubo un cambio reciente y no lo ves, cierra la app del todo y vuelve a abrirla.</p></details>
-  </section>
+  </div></details>
 </main>
-<footer>JCI Bogotá · Cámara Junior de Bogotá<br><span style="opacity:.7">Versión del 28-nov-2026 · v17</span></footer>
+<footer>JCI Bogotá · Cámara Junior de Bogotá<br><span style="opacity:.7">Versión del 28-nov-2026 · v18</span></footer>
 <script>
 var ICONOS = {
   moneda: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.2c-.5-.8-1.4-1.2-2.5-1.2-1.4 0-2.4.7-2.4 1.8 0 2.7 5 1.3 5 4 0 1.1-1.1 1.9-2.6 1.9-1.2 0-2.2-.5-2.7-1.4M12 6.5V8m0 8v1.5"/>',
